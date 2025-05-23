@@ -17,8 +17,9 @@ func _ready() -> void:
 	$BeltSprite.play()
 	
 	$SwordSprite.visible = false
+	$SwordCollider/CollisionPolygon2D.disabled = true
 
-	
+
 func set_animation(animation: String):
 	$BodySprite.animation = animation
 	$EyesSprite.animation = animation
@@ -83,3 +84,9 @@ func _on_cast_finish_timer_timeout() -> void:
 	active_cast = null
 	set_animation("idle")
 	$SwordSprite.visible = false
+
+
+func _on_sword_collider_body_entered(body: Node2D) -> void:
+	if body.is_in_group("hurtbox"):
+		# TODO figure out how much damage to take
+		body.take_damage(10)
