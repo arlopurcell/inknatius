@@ -4,12 +4,14 @@ extends CharacterBody2D
 
 var can_cast = true
 var active_cast = null
+var face_direction = Vector2.RIGHT
 
 func _ready() -> void:
 	$BodySprite.modulate = Color(1, 0.5, 0) # orange
 	$HatSprite.modulate = Color(0.3, 0, 0.5) # purple
 	$BeltSprite.modulate = Color(0.5, 0.3, 0.1) # brown
 	$SwordSprite.modulate = Color(0.7, 0.7, 0.7) # gray
+
 	set_animation("idle")
 	$BodySprite.play()
 	$EyesSprite.play()
@@ -21,10 +23,10 @@ func _ready() -> void:
 
 
 func set_animation(animation: String):
-	$BodySprite.animation = animation
-	$EyesSprite.animation = animation
-	$HatSprite.animation = animation
-	$BeltSprite.animation = animation
+	$BodySprite.play(animation)
+	$EyesSprite.play(animation)
+	$HatSprite.play(animation)
+	$BeltSprite.play(animation)
 	
 func set_animation_flip_h(flip_h: bool):
 	$BodySprite.flip_h = flip_h
@@ -51,42 +53,41 @@ func get_input():
 		
 	velocity = input_direction * speed
 	
+	if not input_direction.is_zero_approx():
+		face_direction = input_direction
+	
 	# casting
 	if Input.is_action_pressed("arm_1") and can_cast:
 		can_cast = false
 		active_cast = "arm_1"
-		# TODO decide direction
-		if abs(input_direction.y) > abs(input_direction.x):
-			if input_direction.y > 0:
+		if abs(face_direction.y) > abs(face_direction.x):
+			if face_direction.y > 0:
 				set_animation("attack_down")
+				$WeaponAnimator.play("attack_down")
 			else:
 				set_animation("attack_up")
+				$WeaponAnimator.play("attack_up")
 		else:
 			set_animation("attack_right")
-			$SwordSprite.visible = true
-			$WeaponAnimator.current_animation = "attack_right"
 			
-			$WeaponAnimator.play()
-		$CastActivateTimer.start()
-		$CastFinishTimer.start()
+			if face_direction.x > 0:
+				$WeaponAnimator.play("attack_right")
+			else:
+				$WeaponAnimator.play("attack_left")
+
 
 func _physics_process(delta):
 	get_input()
 	move_and_slide()
 
 
-func _on_cast_activate_timer_timeout() -> void:
-	# collide and stuff
-	pass
-
-func _on_cast_finish_timer_timeout() -> void:
-	can_cast = true
-	active_cast = null
-	set_animation("idle")
-	$SwordSprite.visible = false
-
-
 func _on_sword_collider_body_entered(body: Node2D) -> void:
 	if body.is_in_group("hurtbox"):
 		# TODO figure out how much damage to take
-		body.take_damage(10)
+		body.take_damage(20)
+
+
+func _on_weapon_animation_finished(anim_name: StringName) -> void:
+	can_cast = true
+	active_cast = null
+	set_animation("idle")
