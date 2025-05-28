@@ -24,6 +24,8 @@ window/size/resizable=false
 [global_group]
 
 hurtbox=""
+enemy_mob=""
+player_mob=""
 
 [input]
 
