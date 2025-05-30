@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=4 uid="uid://bxlolmtb5eb0d"]
+[gd_scene load_steps=12 format=4 uid="uid://bxlolmtb5eb0d"]
 
 [ext_resource type="Script" uid="uid://b03umnjhcut2d" path="res://level.gd" id="1_1ainy"]
 [ext_resource type="PackedScene" uid="uid://c7yf0q2ibq4ol" path="res://mob.tscn" id="2_km5ld"]
 [ext_resource type="Texture2D" uid="uid://bbogx0s35kmhn" path="res://assets/tiles.png" id="3_0b4ue"]
+[ext_resource type="Script" uid="uid://btkwljg8ks2f4" path="res://pause_menu.gd" id="5_f2txt"]
 [ext_resource type="PackedScene" uid="uid://bmvx4xqqrsgb0" path="res://player.tscn" id="6_2orkt"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_0b4ue"]
@@ -30,6 +31,17 @@ sources/1 = SubResource("TileSetAtlasSource_f2txt")
 source_geometry_mode = 1
 agent_radius = 50.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0b4ue"]
+bg_color = Color(0, 0, 0, 1)
+border_color = Color(0, 0, 0, 1)
+expand_margin_left = 6.0
+expand_margin_top = 6.0
+expand_margin_right = 6.0
+expand_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2txt"]
+bg_color = Color(1, 0, 0, 1)
+
 [node name="Level" type="Node2D"]
 script = ExtResource("1_1ainy")
 mob_scene = ExtResource("2_km5ld")
@@ -43,3 +55,92 @@ scale = Vector2(0.132148, 0.402163)
 navigation_polygon = SubResource("NavigationPolygon_f2txt")
 
 [node name="Player" parent="." instance=ExtResource("6_2orkt")]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="HealthBar" type="ProgressBar" parent="HUD"]
+offset_left = 73.0
+offset_top = 815.0
+offset_right = 525.0
+offset_bottom = 842.0
+theme_override_styles/background = SubResource("StyleBoxFlat_0b4ue")
+theme_override_styles/fill = SubResource("StyleBoxFlat_f2txt")
+value = 100.0
+show_percentage = false
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+process_mode = 2
+visible = false
+script = ExtResource("5_f2txt")
+
+[node name="ColorRect" type="ColorRect" parent="PauseMenu"]
+offset_right = 1610.0
+offset_bottom = 913.0
+color = Color(0, 0, 0, 0.501961)
+
+[node name="CenterContainer" type="CenterContainer" parent="PauseMenu"]
+offset_right = 1600.0
+offset_bottom = 904.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/CenterContainer"]
+layout_mode = 2
+
+[node name="PausedTitle" type="Label" parent="PauseMenu/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Paused"
+
+[node name="Resume" type="Button" parent="PauseMenu/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Resume"
+
+[node name="ExitToMenu" type="Button" parent="PauseMenu/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Exit to Main Menu"
+
+[node name="ExitToDesktop" type="Button" parent="PauseMenu/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Exit to Desktop"
+
+[node name="DeathMenu" type="CanvasLayer" parent="."]
+process_mode = 2
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="DeathMenu"]
+offset_right = 1604.0
+offset_bottom = 911.0
+color = Color(0, 0, 0, 0.666667)
+
+[node name="CenterContainer" type="CenterContainer" parent="DeathMenu"]
+offset_right = 1607.0
+offset_bottom = 911.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DeathMenu/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="DeathMenu/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "You have died..."
+
+[node name="ExitToMenu" type="Button" parent="DeathMenu/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Exit to Main Menu"
+
+[node name="ExitToDesktop" type="Button" parent="DeathMenu/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Exit to Desktop"
+
+[connection signal="died" from="Player" to="." method="_on_player_died"]
+[connection signal="health_changed" from="Player" to="." method="_on_player_health_changed"]
+[connection signal="pressed" from="PauseMenu/CenterContainer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/CenterContainer/VBoxContainer/ExitToMenu" to="." method="_on_exit_to_menu_pressed"]
+[connection signal="pressed" from="PauseMenu/CenterContainer/VBoxContainer/ExitToDesktop" to="." method="_on_exit_to_desktop_pressed"]
+[connection signal="pressed" from="DeathMenu/CenterContainer/VBoxContainer/ExitToMenu" to="." method="_on_exit_to_menu_pressed"]
+[connection signal="pressed" from="DeathMenu/CenterContainer/VBoxContainer/ExitToDesktop" to="." method="_on_exit_to_desktop_pressed"]

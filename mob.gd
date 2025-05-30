@@ -16,6 +16,8 @@ var is_attacking = false
 @export var ai_freq_frames = 10
 @export var ai_freq_offset = 0
 
+var flip_h_offset = -40
+
 var visible_enemies = {}
 
 func take_damage(damage: int) -> void:
@@ -39,7 +41,6 @@ func ai_process():
 			$NavigationAgent2D.target_position = global_position
 		else:
 			if global_position.distance_to(enemy.global_position) < attack_distance:
-				print("starting attack")
 				$NavigationAgent2D.target_position = global_position
 				is_attacking = true
 				# If in position to attack, do it. start animations and set motion
@@ -47,22 +48,26 @@ func ai_process():
 				if abs(enemy_direction.x) > abs(enemy_direction.y):
 					if enemy_direction.x > 0:
 						$BodySprite.flip_h = false
+						$BodySprite.offset.x = 0
 						$BodySprite.play("attack_right")
 						$AttackAnimation.play("attack_right")
 						velocity = Vector2.RIGHT * attack_velocity
 					else:
 						$BodySprite.flip_h = true
+						$BodySprite.offset.x = flip_h_offset
 						$BodySprite.play("attack_right")
 						$AttackAnimation.play("attack_right")
 						velocity = Vector2.LEFT * attack_velocity
 				else:
 					if enemy_direction.y > 0:
 						$BodySprite.flip_h = false
+						$BodySprite.offset.x = 0
 						$BodySprite.play("attack_down")
 						$AttackAnimation.play("attack_down")
 						velocity = Vector2.DOWN * attack_velocity
 					else:
 						$BodySprite.flip_h = false
+						$BodySprite.offset.x = 0
 						$BodySprite.play("attack_up")
 						$AttackAnimation.play("attack_up")
 						velocity = Vector2.UP * attack_velocity
@@ -89,14 +94,18 @@ func _physics_process(delta):
 		var path_point = $NavigationAgent2D.get_next_path_position()
 		velocity = global_position.direction_to(path_point) * speed
 		$BodySprite.animation = "move"
-		$BodySprite.flip_h = velocity.x < 0
+		if velocity.x < 0:
+			$BodySprite.flip_h = true
+			$BodySprite.offset.x = flip_h_offset
+		else:
+			$BodySprite.flip_h = false
+			$BodySprite.offset.x = 0
 	elif not is_attacking:
 		$BodySprite.play("idle")
 	move_and_collide(velocity * delta)
 
 
 func _on_attack_animation_finished(anim_name: StringName) -> void:
-	print("done attack")
 	is_attacking = false
 
 
@@ -107,3 +116,8 @@ func _on_vision_collider_body_entered(body: Node2D) -> void:
 func _on_vision_collider_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player_mob"):
 		visible_enemies.erase(body)
+		
+func _on_attack_collider_body_entered(body: Node2D) -> void:
+	if body.is_in_group("hurtbox") and body.is_in_group("player_mob"):
+		# TODO figure out how much damage to take
+		body.take_damage(20)

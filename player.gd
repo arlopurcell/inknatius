@@ -6,6 +6,12 @@ var can_cast = true
 var active_cast = null
 var face_direction = Vector2.RIGHT
 
+var max_health = 100
+var current_health = max_health
+
+signal health_changed
+signal died
+
 func _ready() -> void:
 	$BodySprite.modulate = Color(1, 0.5, 0) # orange
 	$HatSprite.modulate = Color(0.3, 0, 0.5) # purple
@@ -34,6 +40,15 @@ func set_animation_flip_h(flip_h: bool):
 	$HatSprite.flip_h = flip_h
 	$BeltSprite.flip_h = flip_h
 	
+func take_damage(damage: int) -> void:
+	var old_health = current_health
+	current_health -= damage
+	health_changed.emit()
+
+func _on_health_changed() -> void:
+	if current_health <= 0:
+		# TODO die
+		$DeathAnimator.play("death")
 
 func get_input():
 	# movement
@@ -82,7 +97,7 @@ func _physics_process(delta):
 
 
 func _on_sword_collider_body_entered(body: Node2D) -> void:
-	if body.is_in_group("hurtbox"):
+	if body.is_in_group("hurtbox") and body.is_in_group("enemy_mob"):
 		# TODO figure out how much damage to take
 		body.take_damage(20)
 
@@ -91,3 +106,7 @@ func _on_weapon_animation_finished(anim_name: StringName) -> void:
 	can_cast = true
 	active_cast = null
 	set_animation("idle")
+
+
+func _on_death_animation_finished(anim_name: StringName) -> void:
+	died.emit()

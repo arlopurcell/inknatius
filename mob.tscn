@@ -229,10 +229,10 @@ animations = [{
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dy6sc"]
 bg_color = Color(0, 0, 0, 1)
-expand_margin_left = 1.0
-expand_margin_top = 1.0
-expand_margin_right = 1.0
-expand_margin_bottom = 1.0
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nokgg"]
 bg_color = Color(1, 0, 0, 1)
@@ -455,13 +455,13 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_nokgg"]
 radius = 500.0
 
-[node name="Mob" type="RigidBody2D" groups=["enemy_mob"]]
+[node name="Mob" type="RigidBody2D" groups=["enemy_mob", "hurtbox"]]
 collision_layer = 2
 collision_mask = 3
 gravity_scale = 0.0
 script = ExtResource("1_nokgg")
 
-[node name="BodyCollider" type="CollisionShape2D" parent="." groups=["hurtbox"]]
+[node name="BodyCollider" type="CollisionShape2D" parent="."]
 position = Vector2(-1.5, -13)
 shape = SubResource("RectangleShape2D_dy6sc")
 
@@ -469,8 +469,8 @@ shape = SubResource("RectangleShape2D_dy6sc")
 position = Vector2(23, -14)
 sprite_frames = SubResource("SpriteFrames_1qmh0")
 animation = &"attack_right"
-frame = 9
-frame_progress = 1.0
+frame = 7
+flip_h = true
 
 [node name="HealthBar" type="ProgressBar" parent="."]
 offset_left = -20.0
@@ -506,6 +506,7 @@ collision_mask = 7
 shape = SubResource("CircleShape2D_nokgg")
 
 [connection signal="health_changed" from="." to="." method="_on_health_changed"]
+[connection signal="body_entered" from="AttackCollider" to="." method="_on_attack_collider_body_entered"]
 [connection signal="animation_finished" from="AttackAnimation" to="." method="_on_attack_animation_finished"]
 [connection signal="body_entered" from="VisionCollider" to="." method="_on_vision_collider_body_entered"]
 [connection signal="body_exited" from="VisionCollider" to="." method="_on_vision_collider_body_exited"]
