@@ -1,3 +1,4 @@
+class_name Mob
 extends RigidBody2D
 
 @export var speed = 200
