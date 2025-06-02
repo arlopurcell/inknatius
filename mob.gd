@@ -5,10 +5,11 @@ extends RigidBody2D
 
 var velocity = Vector2.RIGHT
 
-@export var max_health = 100
+@export var max_health = 10
 var current_health = max_health
 
 signal health_changed(old_value: int, new_value: int)
+signal died(location: Vector2)
 
 var is_attacking = false
 @export var attack_distance = 120
@@ -30,6 +31,7 @@ func take_damage(damage: int) -> void:
 func _on_health_changed(old_value: int, new_value: int) -> void:
 	$HealthBar.value = (current_health as float / max_health as float) * 100.0
 	if new_value <= 0:
+		died.emit(global_position)
 		queue_free()
 		
 func ai_process():

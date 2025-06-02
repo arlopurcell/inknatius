@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://bxlolmtb5eb0d"]
+[gd_scene load_steps=21 format=3 uid="uid://bxlolmtb5eb0d"]
 
 [ext_resource type="Script" uid="uid://b03umnjhcut2d" path="res://level.gd" id="1_1ainy"]
 [ext_resource type="Texture2D" uid="uid://bbogx0s35kmhn" path="res://assets/tiles.png" id="3_0b4ue"]
+[ext_resource type="Texture2D" uid="uid://dyesd4pnje7gs" path="res://assets/portal.png" id="5_1ainy"]
 [ext_resource type="Script" uid="uid://btkwljg8ks2f4" path="res://pause_menu.gd" id="5_f2txt"]
 [ext_resource type="PackedScene" uid="uid://bmvx4xqqrsgb0" path="res://player.tscn" id="6_2orkt"]
 
@@ -41,6 +42,131 @@ expand_margin_bottom = 6.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2txt"]
 bg_color = Color(1, 0, 0, 1)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_n6hdu"]
+atlas = ExtResource("5_1ainy")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_km5ld"]
+atlas = ExtResource("5_1ainy")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i2t4f"]
+atlas = ExtResource("5_1ainy")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8cye3"]
+atlas = ExtResource("5_1ainy")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2orkt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n6hdu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_km5ld")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i2t4f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8cye3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_f2txt"]
+resource_name = "open"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ExitPortal/Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ExitPortal/Sprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ExitPortal/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_1ainy"]
+length = 1.00001
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ExitPortal/Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ExitPortal/Sprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/path = NodePath("ExitPortal/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n6hdu"]
+_data = {
+&"RESET": SubResource("Animation_1ainy"),
+&"open": SubResource("Animation_f2txt")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f2txt"]
+radius = 53.0094
+
 [node name="Level" type="Node2D"]
 script = ExtResource("1_1ainy")
 
@@ -48,6 +174,7 @@ script = ExtResource("1_1ainy")
 tile_set = SubResource("TileSet_oi3di")
 
 [node name="Player" parent="." instance=ExtResource("6_2orkt")]
+z_index = 10
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 scale = Vector2(0.132148, 0.402163)
@@ -142,6 +269,26 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Exit to Desktop"
 
+[node name="ExitPortal" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="Sprite" type="AnimatedSprite2D" parent="ExitPortal"]
+scale = Vector2(1e-05, 1e-05)
+sprite_frames = SubResource("SpriteFrames_2orkt")
+autoplay = "default"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ExitPortal"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_n6hdu")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitPortal"]
+position = Vector2(-4, 7)
+shape = SubResource("CircleShape2D_f2txt")
+disabled = true
+
 [connection signal="died" from="Player" to="." method="_on_player_died"]
 [connection signal="health_changed" from="Player" to="." method="_on_player_health_changed"]
 [connection signal="pressed" from="PauseMenu/CenterContainer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
@@ -149,3 +296,5 @@ text = "Exit to Desktop"
 [connection signal="pressed" from="PauseMenu/CenterContainer/VBoxContainer/ExitToDesktop" to="." method="_on_exit_to_desktop_pressed"]
 [connection signal="pressed" from="DeathMenu/CenterContainer/VBoxContainer/ExitToMenu" to="." method="_on_exit_to_menu_pressed"]
 [connection signal="pressed" from="DeathMenu/CenterContainer/VBoxContainer/ExitToDesktop" to="." method="_on_exit_to_desktop_pressed"]
+[connection signal="body_entered" from="ExitPortal" to="." method="_on_exit_portal_body_entered"]
+[connection signal="body_exited" from="ExitPortal" to="." method="_on_exit_portal_body_exited"]

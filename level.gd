@@ -84,10 +84,14 @@ static func new_level(depth: int) -> Level:
 				var mob_y = rng.randi_range(room_y, room_y + room_height)
 				mob.position = Vector2(mob_x * tile_size as float, mob_y * tile_size as float)
 				level.add_child(mob)
+				level.enemy_count += 1
+				mob.died.connect(level._on_mob_died)
 	
 	return level
 
 var depth = 1
+var enemy_count = 0
+var is_on_exit_portal = false
 
 func _ready() -> void:
 	$HUD/LevelNumberLabel.text = "Level %d" % depth
@@ -99,7 +103,21 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Pause"):
 		get_tree().paused = true
 		$PauseMenu.show()
+	if Input.is_action_just_pressed("interact"):
+		if is_on_exit_portal:
+			var new_level = Level.new_level(depth + 1)
 
+			var tree = get_tree()
+			var cur_scene = tree.get_current_scene()
+			tree.get_root().add_child(new_level)
+			tree.get_root().remove_child(cur_scene)
+			tree.set_current_scene(new_level)
+
+func _on_mob_died(location: Vector2) -> void:
+	enemy_count -= 1
+	if enemy_count == 0:
+		$ExitPortal.global_position = location
+		$ExitPortal/AnimationPlayer.play("open")
 
 func _on_player_health_changed() -> void:
 	$HUD/HealthBar.value = ($Player.current_health as float / $Player.max_health as float) * 100.0
@@ -122,3 +140,13 @@ func _on_exit_to_desktop_pressed() -> void:
 func _on_player_died() -> void:
 	$DeathMenu.show()
 	get_tree().paused = true
+
+
+func _on_exit_portal_body_entered(body: Node2D) -> void:
+	if body == $Player:
+		is_on_exit_portal = true
+
+
+func _on_exit_portal_body_exited(body: Node2D) -> void:
+	if body == $Player:
+		is_on_exit_portal = false

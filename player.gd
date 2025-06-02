@@ -7,7 +7,7 @@ var can_cast = true
 var active_cast = null
 var face_direction = Vector2.RIGHT
 
-var max_health = 100
+var max_health = 300
 var current_health = max_health
 
 signal health_changed
