@@ -13,11 +13,12 @@ var current_health = max_health
 signal health_changed
 signal died
 
+var arm_1_weapon = null
+
 func _ready() -> void:
 	$BodySprite.modulate = Color(1, 0.5, 0) # orange
 	$HatSprite.modulate = Color(0.3, 0, 0.5) # purple
 	$BeltSprite.modulate = Color(0.5, 0.3, 0.1) # brown
-	$SwordSprite.modulate = Color(0.7, 0.7, 0.7) # gray
 
 	set_animation("idle")
 	$BodySprite.play()
@@ -25,8 +26,12 @@ func _ready() -> void:
 	$HatSprite.play()
 	$BeltSprite.play()
 	
-	$SwordSprite.visible = false
-	$SwordCollider/CollisionPolygon2D.disabled = true
+	# temp add sword on arm 1
+	var sword_scene = load("res://sword.tscn")
+	arm_1_weapon = sword_scene.instantiate()
+	arm_1_weapon.hit.connect(_on_attack_hit)
+	arm_1_weapon.attack_finished.connect(_on_attack_finished)
+	add_child(arm_1_weapon)
 
 
 func set_animation(animation: String):
@@ -73,23 +78,17 @@ func get_input():
 		face_direction = input_direction
 	
 	# casting
-	if Input.is_action_pressed("arm_1") and can_cast:
+	if Input.is_action_pressed("arm_1") and can_cast and arm_1_weapon != null:
 		can_cast = false
 		active_cast = "arm_1"
+		arm_1_weapon.trigger(face_direction)
 		if abs(face_direction.y) > abs(face_direction.x):
 			if face_direction.y > 0:
 				set_animation("attack_down")
-				$WeaponAnimator.play("attack_down")
 			else:
 				set_animation("attack_up")
-				$WeaponAnimator.play("attack_up")
 		else:
 			set_animation("attack_right")
-			
-			if face_direction.x > 0:
-				$WeaponAnimator.play("attack_right")
-			else:
-				$WeaponAnimator.play("attack_left")
 
 
 func _physics_process(delta):
@@ -97,17 +96,16 @@ func _physics_process(delta):
 	move_and_slide()
 
 
-func _on_sword_collider_body_entered(body: Node2D) -> void:
-	if body.is_in_group("hurtbox") and body.is_in_group("enemy_mob"):
-		# TODO figure out how much damage to take
-		body.take_damage(20)
+func _on_death_animation_finished(anim_name: StringName) -> void:
+	died.emit()
 
 
-func _on_weapon_animation_finished(anim_name: StringName) -> void:
+func _on_attack_finished() -> void:
 	can_cast = true
 	active_cast = null
 	set_animation("idle")
 
 
-func _on_death_animation_finished(anim_name: StringName) -> void:
-	died.emit()
+func _on_attack_hit(body: Node2D, base_damage: float) -> void:
+	# TODO apply other modifiers
+	body.take_damage(base_damage)
