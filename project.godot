@@ -13,6 +13,7 @@ config_version=5
 config/name="inknatius"
 run/main_scene="uid://cnjaahmcttsq3"
 config/features=PackedStringArray("4.4", "Forward Plus")
+boot_splash/image="uid://bdykfh33nhoo8"
 config/icon="res://icon.svg"
 
 [display]

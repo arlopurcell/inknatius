@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cnjaahmcttsq3"]
 
-[ext_resource type="Texture2D" uid="uid://dtxy3qrahw4n7" path="res://assets/inknatius2.png" id="1_06t4h"]
 [ext_resource type="Script" uid="uid://dep2ad3abupc" path="res://main_menu.gd" id="1_7vrkn"]
+[ext_resource type="Texture2D" uid="uid://bdykfh33nhoo8" path="res://assets/logo.png" id="2_7vrkn"]
 
 [node name="MainMenu" type="MarginContainer"]
 anchors_preset = 15
@@ -21,11 +21,9 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="HBoxContainer/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 100
-text = "Inknatius
-"
+texture = ExtResource("2_7vrkn")
 
 [node name="NewGameButton" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -37,14 +35,6 @@ text = "New Game
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "Exit"
-
-[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/CenterContainer"]
-layout_mode = 2
-texture = ExtResource("1_06t4h")
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
