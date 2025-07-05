@@ -2,7 +2,6 @@ class_name Sword
 extends Area2D
 
 var power = 20.0
-signal hit(body: Node2D, base_damage: float)
 signal attack_finished
 
 func _ready() -> void:
@@ -11,8 +10,7 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("hurtbox") and body.is_in_group("enemy_mob"):
-		hit.emit(body, power)
-
+		body.take_damage(power)
 
 func _on_animation_finished(anim_name: StringName) -> void:
 	attack_finished.emit()

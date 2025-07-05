@@ -5,7 +5,7 @@ extends RigidBody2D
 
 var velocity = Vector2.RIGHT
 
-@export var max_health = 10
+@export var max_health = 50
 var current_health = max_health
 
 signal health_changed(old_value: int, new_value: int)

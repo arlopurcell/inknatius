@@ -14,6 +14,7 @@ signal health_changed
 signal died
 
 var arm_1_weapon = null
+var arm_2_weapon = null
 
 func _ready() -> void:
 	$BodySprite.modulate = Color(1, 0.5, 0) # orange
@@ -29,9 +30,14 @@ func _ready() -> void:
 	# temp add sword on arm 1
 	var sword_scene = load("res://sword.tscn")
 	arm_1_weapon = sword_scene.instantiate()
-	arm_1_weapon.hit.connect(_on_attack_hit)
 	arm_1_weapon.attack_finished.connect(_on_attack_finished)
 	add_child(arm_1_weapon)
+
+	# temp add wand on arm 2
+	var wand_scene = load("res://wand.tscn")
+	arm_2_weapon = wand_scene.instantiate()
+	arm_2_weapon.attack_finished.connect(_on_attack_finished)
+	add_child(arm_2_weapon)
 
 
 func set_animation(animation: String):
@@ -89,6 +95,18 @@ func get_input():
 				set_animation("attack_up")
 		else:
 			set_animation("attack_right")
+			
+	if Input.is_action_pressed("arm_2") and can_cast and arm_2_weapon != null:
+		can_cast = false
+		active_cast = "arm_2"
+		arm_2_weapon.trigger(face_direction)
+		if abs(face_direction.y) > abs(face_direction.x):
+			if face_direction.y > 0:
+				set_animation("attack_down")
+			else:
+				set_animation("attack_up")
+		else:
+			set_animation("attack_right")
 
 
 func _physics_process(delta):
@@ -104,8 +122,3 @@ func _on_attack_finished() -> void:
 	can_cast = true
 	active_cast = null
 	set_animation("idle")
-
-
-func _on_attack_hit(body: Node2D, base_damage: float) -> void:
-	# TODO apply other modifiers
-	body.take_damage(base_damage)

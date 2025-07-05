@@ -170,7 +170,7 @@ radius = 53.0094
 [node name="Level" type="Node2D"]
 script = ExtResource("1_1ainy")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." groups=["navigation_polygon_source_geometry_group"]]
+[node name="TileMapLayer" type="TileMapLayer" parent="." groups=["navigation_polygon_source_geometry_group", "wall"]]
 tile_set = SubResource("TileSet_oi3di")
 
 [node name="Player" parent="." instance=ExtResource("6_2orkt")]
