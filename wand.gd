@@ -1,16 +1,18 @@
 class_name Wand
 extends Node2D
 
-@export var power = 20.0
-@export var range = 400.0
-@export var projectile_speed = 400
+var power = 20.0
+var range = 400.0
+var projectile_speed = 400
+var radius = 60.0
 
 var face_direction = null
 
 signal attack_finished
 
-#func _ready() -> void:
-#	$Sprite.modulate = Color(0.7, 0.7, 0.7) # gray
+func _ready() -> void:
+	# TODO make handle and head different colors?
+	$Sprite2D.modulate = Color(0.6, 0.4, 0.7) # brown
 
 func _on_animation_finished(anim_name: StringName) -> void:
 	attack_finished.emit()
@@ -31,5 +33,12 @@ func trigger(face_direction: Vector2) -> void:
 
 
 func fire() -> void:
-	var projectile = Projectile.fire(global_position + face_direction * 100.0, face_direction * projectile_speed, range, power)
+	var projectile = Projectile.fire(
+		global_position + face_direction * 100.0, 
+		face_direction * projectile_speed, 
+		range, 
+		power,
+		radius,
+		Color.ORANGE,
+	)
 	get_parent().get_parent().add_child(projectile)
