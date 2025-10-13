@@ -12,31 +12,31 @@ const room_count_max = 6
 const room_size_min = 8
 const room_size_max = 20
 
-const corridor_width = 4
+const corridor_width = 6
 
 const enemies_per_room_min = 0
 const enemies_per_room_max = 3
 
 const tile_size = 32
 
+enum TileType { FLOOR, WALL, EDGE }
+
 static func new_level(depth: int) -> Level:
 	var level_scene = load("res://level.tscn")
 	var mob_scene = load("res://mob.tscn")
 	var level: Level = level_scene.instantiate()
 	level.depth = depth
-
-	var tiles: TileMapLayer = level.get_child(0)
-	var source_id = tiles.tile_set.get_source_id(0)
-	var wall_coord = Vector2i(0, 0)
-	var floor_coord = Vector2i(1, 0)
 	
-	var rng = RandomNumberGenerator.new()
-
+	var tile_arr = [];
 	# first make everything a wall
 	for x in range(level_width):
+		var tile_column = []
 		for y in range(level_height):
-			tiles.set_cell(Vector2i(x, y), source_id, wall_coord)
-
+			tile_column.append(TileType.WALL)
+		tile_arr.append(tile_column);
+	
+	var rng = RandomNumberGenerator.new()
+	
 	var last_room_center_x = null
 	var last_room_center_y = null
 	# now add some rooms
@@ -55,7 +55,7 @@ static func new_level(depth: int) -> Level:
 		
 		for x in range(room_x, room_x + room_width):
 			for y in range(room_y, room_y + room_height):
-				tiles.set_cell(Vector2i(x, y), source_id, floor_coord)
+				tile_arr[x][y] = TileType.FLOOR
 		
 		var room_center_x = room_x + (room_width / 2)
 		var room_center_y = room_y + (room_height / 2)
@@ -63,11 +63,11 @@ static func new_level(depth: int) -> Level:
 			# make a corridor from the last room
 			for x in range(min(room_center_x, last_room_center_x), max(room_center_x, last_room_center_x)):
 				for y in range(room_center_y - corridor_width / 2, room_center_y + corridor_width / 2):
-					tiles.set_cell(Vector2i(x, y), source_id, floor_coord)
+					tile_arr[x][y] = TileType.FLOOR
 				
 			for y in range(min(room_center_y, last_room_center_y), max(room_center_y, last_room_center_y)):
 				for x in range(last_room_center_x - corridor_width / 2, last_room_center_x + corridor_width / 2):
-					tiles.set_cell(Vector2i(x, y), source_id, floor_coord)
+					tile_arr[x][y] = TileType.FLOOR
 			
 		last_room_center_x = room_center_x
 		last_room_center_y = room_center_y
@@ -86,6 +86,32 @@ static func new_level(depth: int) -> Level:
 				level.add_child(mob)
 				level.enemy_count += 1
 				mob.died.connect(level._on_mob_died)
+				
+	# now make edges
+	for x in range(level_width):
+		for y in range(level_height):
+			if tile_arr[x][y] == TileType.FLOOR:
+				if x == 0 || y == 0 || x == level_width - 1 || y == level_height - 1:
+					tile_arr[x][y] = TileType.EDGE
+				elif tile_arr[x-1][y] == TileType.WALL or tile_arr[x+1][y] == TileType.WALL or tile_arr[x][y-1] == TileType.WALL or tile_arr[x][y+1] == TileType.WALL:
+					tile_arr[x][y] = TileType.EDGE
+	
+	var tiles: TileMapLayer = level.get_child(0)
+	var source_id = tiles.tile_set.get_source_id(0)
+	var wall_coord = Vector2i(0, 0)
+	var floor_coord = Vector2i(1, 0)
+	var edge_coord = Vector2i(2, 0)
+	
+	for x in range(level_width):
+		for y in range(level_height):
+			var tile_coord
+			if tile_arr[x][y] == TileType.FLOOR:
+				tile_coord = floor_coord
+			elif tile_arr[x][y] == TileType.WALL:
+				tile_coord = wall_coord
+			else:
+				tile_coord = edge_coord
+			tiles.set_cell(Vector2i(x, y), source_id, tile_coord)
 	
 	return level
 

@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://btkwljg8ks2f4" path="res://pause_menu.gd" id="5_f2txt"]
 [ext_resource type="PackedScene" uid="uid://bmvx4xqqrsgb0" path="res://player.tscn" id="6_2orkt"]
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_0b4ue"]
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_1ainy"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
@@ -18,7 +18,8 @@ texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 1:0/0 = 0
-1:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_0b4ue")
+1:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_1ainy")
+2:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_oi3di"]
 tile_size = Vector2i(32, 32)
