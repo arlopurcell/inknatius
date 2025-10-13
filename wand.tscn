@@ -1,53 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://8v5cqetcqda3"]
 
+[ext_resource type="Script" uid="uid://cm56b5tk6h8ea" path="res://wand.gd" id="1_tqelj"]
 [ext_resource type="Texture2D" uid="uid://bfm8orcxjxgni" path="res://assets/wand.png" id="2_tqelj"]
-
-[sub_resource type="GDScript" id="GDScript_jqpkh"]
-script/source = "class_name DashWand
-extends Node2D
-
-var power = 20.0
-var range = 400.0
-var projectile_speed = 400
-var radius = 60.0
-
-var face_direction = null
-
-signal attack_finished
-
-func _ready() -> void:
-	# TODO make handle and head different colors?
-	$Sprite2D.modulate = Color(0.6, 0.4, 0.7) # brown
-
-func _on_animation_finished(anim_name: StringName) -> void:
-	attack_finished.emit()
-	
-func trigger(face_direction: Vector2) -> void:
-	if abs(face_direction.y) > abs(face_direction.x):
-		if face_direction.y > 0:
-			$AnimationPlayer.play(\"attack_down\")
-		else:
-			$AnimationPlayer.play(\"attack_up\")
-	else:
-		if face_direction.x > 0:
-			$AnimationPlayer.play(\"attack_right\")
-		else:
-			$AnimationPlayer.play(\"attack_left\")
-	
-	self.face_direction = face_direction
-
-
-func fire() -> void:
-	var projectile = Projectile.fire(
-		global_position + face_direction * 100.0, 
-		face_direction * projectile_speed, 
-		range, 
-		power,
-		radius,
-		Color.ORANGE,
-	)
-	get_parent().get_parent().add_child(projectile)
-"
 
 [sub_resource type="Animation" id="Animation_tqelj"]
 length = 0.001
@@ -318,7 +272,7 @@ _data = {
 }
 
 [node name="Wand" type="Node2D"]
-script = SubResource("GDScript_jqpkh")
+script = ExtResource("1_tqelj")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false

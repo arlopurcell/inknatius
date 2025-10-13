@@ -1,6 +1,7 @@
 class_name Projectile
 extends RigidBody2D
 
+var mana_cost = 20
 var projectile_speed = 400.0
 var power = 20.0
 var range = 2000.0

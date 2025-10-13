@@ -3,6 +3,7 @@ extends Area2D
 
 var power = 20.0
 signal attack_finished
+var mana_cost = 0
 
 func _ready() -> void:
 	$Sprite.modulate = Color(0.7, 0.7, 0.7) # gray

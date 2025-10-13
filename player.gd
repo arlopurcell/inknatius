@@ -10,7 +10,13 @@ var face_direction = Vector2.RIGHT
 var max_health = 300
 var current_health = max_health
 
+var max_mana = 300
+var current_mana = max_mana
+var mana_regen_frames = 30
+var mana_regen = 3
+
 signal health_changed
+signal mana_changed
 signal died
 
 var arm_1_weapon = null
@@ -95,46 +101,56 @@ func get_input():
 	
 	# casting
 	if Input.is_action_pressed("arm_1") and can_cast and arm_1_weapon != null:
-		can_cast = false
-		active_cast = "arm_1"
-		arm_1_weapon.trigger(face_direction)
-		if abs(face_direction.y) > abs(face_direction.x):
-			if face_direction.y > 0:
-				set_animation("attack_down")
-			else:
-				set_animation("attack_up")
-		else:
-			set_animation("attack_right")
+		if use_mana(arm_1_weapon.mana_cost):
+			can_cast = false
+			active_cast = "arm_1"
+			arm_1_weapon.trigger(face_direction)
+			set_animation_for_cast()
 			
 	if Input.is_action_pressed("arm_2") and can_cast and arm_2_weapon != null:
-		can_cast = false
-		active_cast = "arm_2"
-		arm_2_weapon.trigger(face_direction)
-		if abs(face_direction.y) > abs(face_direction.x):
-			if face_direction.y > 0:
-				set_animation("attack_down")
-			else:
-				set_animation("attack_up")
-		else:
-			set_animation("attack_right")
+		if use_mana(arm_2_weapon.mana_cost):
+			can_cast = false
+			active_cast = "arm_2"
+			arm_2_weapon.trigger(face_direction)
+			set_animation_for_cast()
 			
 	if Input.is_action_pressed("arm_3") and can_cast and arm_3_weapon != null:
-		can_cast = false
-		active_cast = "arm_3"
-		arm_3_weapon.trigger(face_direction)
-		if abs(face_direction.y) > abs(face_direction.x):
-			if face_direction.y > 0:
-				set_animation("attack_down")
-			else:
-				set_animation("attack_up")
-		else:
-			set_animation("attack_right")
+		if use_mana(arm_3_weapon.mana_cost):
+			can_cast = false
+			active_cast = "arm_3"
+			arm_3_weapon.trigger(face_direction)
+			set_animation_for_cast()
 
+func use_mana(cost: int) -> bool:
+	if current_mana >= cost:
+		current_mana -= cost
+		mana_changed.emit()
+		return true
+	else:
+		return false
+
+func set_animation_for_cast() -> void:
+	if abs(face_direction.y) > abs(face_direction.x):
+		if face_direction.y > 0:
+			set_animation("attack_down")
+		else:
+			set_animation("attack_up")
+	else:
+		set_animation("attack_right")
 
 func _physics_process(delta):
 	get_input()
+	do_passive()
 	move_and_slide()
 
+func do_passive() -> void:
+	# Regen mana
+	if Engine.get_process_frames() % mana_regen_frames == 0:
+		var new_mana = current_mana + mana_regen
+		new_mana = min(max_mana, new_mana)
+		if new_mana != current_mana:
+			current_mana = new_mana
+			mana_changed.emit()
 
 func _on_death_animation_finished(anim_name: StringName) -> void:
 	died.emit()

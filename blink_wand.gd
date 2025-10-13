@@ -2,6 +2,7 @@ class_name BlinkWand
 extends Node2D
 
 var range = 100.0
+var mana_cost = 10
 
 var face_direction = null
 

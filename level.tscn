@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bxlolmtb5eb0d"]
+[gd_scene load_steps=23 format=3 uid="uid://bxlolmtb5eb0d"]
 
 [ext_resource type="Script" uid="uid://b03umnjhcut2d" path="res://level.gd" id="1_1ainy"]
 [ext_resource type="Texture2D" uid="uid://bbogx0s35kmhn" path="res://assets/tiles.png" id="3_0b4ue"]
@@ -32,8 +32,18 @@ sources/1 = SubResource("TileSetAtlasSource_f2txt")
 source_geometry_mode = 1
 agent_radius = 50.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ainy"]
+bg_color = Color(0.125911, 0.125911, 0.125911, 1)
+expand_margin_left = 6.0
+expand_margin_top = 6.0
+expand_margin_right = 6.0
+expand_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n6hdu"]
+bg_color = Color(0.122824, 0.239574, 0.749761, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0b4ue"]
-bg_color = Color(0, 0, 0, 1)
+bg_color = Color(0.12549, 0.12549, 0.12549, 1)
 border_color = Color(0, 0, 0, 1)
 expand_margin_left = 6.0
 expand_margin_top = 6.0
@@ -184,11 +194,21 @@ navigation_polygon = SubResource("NavigationPolygon_f2txt")
 [node name="HUD" type="CanvasLayer" parent="."]
 layer = 2
 
+[node name="ManaBar" type="ProgressBar" parent="HUD"]
+offset_left = 30.0
+offset_top = 798.0
+offset_right = 482.0
+offset_bottom = 825.0
+theme_override_styles/background = SubResource("StyleBoxFlat_1ainy")
+theme_override_styles/fill = SubResource("StyleBoxFlat_n6hdu")
+value = 100.0
+show_percentage = false
+
 [node name="HealthBar" type="ProgressBar" parent="HUD"]
-offset_left = 73.0
-offset_top = 815.0
-offset_right = 525.0
-offset_bottom = 842.0
+offset_left = 30.0
+offset_top = 842.0
+offset_right = 482.0
+offset_bottom = 869.0
 theme_override_styles/background = SubResource("StyleBoxFlat_0b4ue")
 theme_override_styles/fill = SubResource("StyleBoxFlat_f2txt")
 value = 100.0
@@ -298,6 +318,7 @@ disabled = true
 
 [connection signal="died" from="Player" to="." method="_on_player_died"]
 [connection signal="health_changed" from="Player" to="." method="_on_player_health_changed"]
+[connection signal="mana_changed" from="Player" to="." method="_on_player_mana_changed"]
 [connection signal="pressed" from="PauseMenu/CenterContainer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/CenterContainer/VBoxContainer/ExitToMenu" to="." method="_on_exit_to_menu_pressed"]
 [connection signal="pressed" from="PauseMenu/CenterContainer/VBoxContainer/ExitToDesktop" to="." method="_on_exit_to_desktop_pressed"]

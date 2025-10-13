@@ -149,6 +149,8 @@ func _on_mob_died(location: Vector2) -> void:
 func _on_player_health_changed() -> void:
 	$HUD/HealthBar.value = ($Player.current_health as float / $Player.max_health as float) * 100.0
 
+func _on_player_mana_changed() -> void:
+	$HUD/ManaBar.value = ($Player.current_mana as float / $Player.max_mana as float) * 100.0
 
 func _on_resume_pressed() -> void:
 	$PauseMenu.hide()

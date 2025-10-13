@@ -15,7 +15,7 @@ var is_attacking = false
 @export var attack_distance = 120
 @export var attack_velocity = 0
 
-@export var ai_freq_frames = 10
+@export var ai_freq_frames = 60
 @export var ai_freq_offset = 0
 
 var flip_h_offset = -40

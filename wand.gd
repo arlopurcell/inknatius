@@ -1,6 +1,7 @@
 class_name Wand
 extends Node2D
 
+var mana_cost = 20
 var power = 20.0
 var range = 400.0
 var projectile_speed = 400
