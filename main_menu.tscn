@@ -27,12 +27,14 @@ texture = ExtResource("2_7vrkn")
 
 [node name="NewGameButton" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../ExitButton")
 theme_override_font_sizes/font_size = 50
 text = "New Game
 "
 
 [node name="ExitButton" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../NewGameButton")
 theme_override_font_sizes/font_size = 50
 text = "Exit"
 

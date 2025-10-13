@@ -103,6 +103,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Pause"):
 		get_tree().paused = true
 		$PauseMenu.show()
+		$PauseMenu/CenterContainer/VBoxContainer/Resume.grab_focus()
 	if Input.is_action_just_pressed("interact"):
 		if is_on_exit_portal:
 			var new_level = Level.new_level(depth + 1)
@@ -139,6 +140,7 @@ func _on_exit_to_desktop_pressed() -> void:
 
 func _on_player_died() -> void:
 	$DeathMenu.show()
+	$DeathMenu/CenterContainer/VBoxContainer/ExitToMenu.grab_focus()
 	get_tree().paused = true
 
 

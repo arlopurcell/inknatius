@@ -1,7 +1,7 @@
 class_name Mob
 extends RigidBody2D
 
-@export var speed = 200
+var speed = 200
 
 var velocity = Vector2.RIGHT
 
@@ -21,6 +21,12 @@ var is_attacking = false
 var flip_h_offset = -40
 
 var visible_enemies = {}
+
+func configure(params: Dictionary) -> void:
+	var speed_scale = params.get("speed_scale", 1.0)
+	$BodySprite.speed_scale = speed_scale
+	$AttackAnimation.speed_scale = speed_scale
+	speed *= speed_scale
 
 func take_damage(damage: int) -> void:
 	var old_health = current_health

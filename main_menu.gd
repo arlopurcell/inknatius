@@ -1,5 +1,7 @@
 extends MarginContainer
 
+func _ready() -> void:
+	$HBoxContainer/VBoxContainer/NewGameButton.grab_focus()
 
 func _on_new_game_button_pressed() -> void:
 	var new_level = Level.new_level(1)

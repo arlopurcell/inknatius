@@ -225,16 +225,20 @@ text = "Paused"
 
 [node name="Resume" type="Button" parent="PauseMenu/CenterContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../ExitToMenu")
 theme_override_font_sizes/font_size = 30
 text = "Resume"
 
 [node name="ExitToMenu" type="Button" parent="PauseMenu/CenterContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../Resume")
+focus_neighbor_bottom = NodePath("../ExitToDesktop")
 theme_override_font_sizes/font_size = 30
 text = "Exit to Main Menu"
 
 [node name="ExitToDesktop" type="Button" parent="PauseMenu/CenterContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../ExitToMenu")
 theme_override_font_sizes/font_size = 30
 text = "Exit to Desktop"
 
@@ -261,11 +265,13 @@ text = "You have died..."
 
 [node name="ExitToMenu" type="Button" parent="DeathMenu/CenterContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../ExitToDesktop")
 theme_override_font_sizes/font_size = 30
 text = "Exit to Main Menu"
 
 [node name="ExitToDesktop" type="Button" parent="DeathMenu/CenterContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../ExitToMenu")
 theme_override_font_sizes/font_size = 30
 text = "Exit to Desktop"
 

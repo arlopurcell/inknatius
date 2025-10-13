@@ -15,6 +15,9 @@ signal died
 
 var arm_1_weapon = null
 var arm_2_weapon = null
+var arm_3_weapon = null
+
+const dead_zone_threshold = 0.2
 
 func _ready() -> void:
 	$BodySprite.modulate = Color(1, 0.5, 0) # orange
@@ -38,6 +41,12 @@ func _ready() -> void:
 	arm_2_weapon = wand_scene.instantiate()
 	arm_2_weapon.attack_finished.connect(_on_attack_finished)
 	add_child(arm_2_weapon)
+	
+	# temp add blinkn on arm 3
+	var blink_scene = load("res://blink_wand.tscn")
+	arm_3_weapon = blink_scene.instantiate()
+	arm_3_weapon.attack_finished.connect(_on_attack_finished)
+	add_child(arm_3_weapon)
 
 
 func set_animation(animation: String):
@@ -65,23 +74,24 @@ func _on_health_changed() -> void:
 func get_input():
 	# movement
 	var input_direction = Input.get_vector("left", "right", "up", "down")
-	
-	if input_direction.x > 0:
-		set_animation_flip_h(false)
-	elif input_direction.x < 0:
-		set_animation_flip_h(true)
+	var in_dead_zone = input_direction.length() < dead_zone_threshold
 	
 	# Don't animate movement if casting
 	if active_cast == null:
-		if input_direction.is_zero_approx():
+		if in_dead_zone:
 			set_animation("idle")
 		else:
 			set_animation("move")
-		
-	velocity = input_direction * speed
 	
-	if not input_direction.is_zero_approx():
-		face_direction = input_direction
+	if not in_dead_zone:
+		velocity = input_direction * speed
+		face_direction = input_direction.normalized()
+		if input_direction.x > 0:
+			set_animation_flip_h(false)
+		elif input_direction.x < 0:
+			set_animation_flip_h(true)
+	else:
+		velocity = Vector2.ZERO
 	
 	# casting
 	if Input.is_action_pressed("arm_1") and can_cast and arm_1_weapon != null:
@@ -100,6 +110,18 @@ func get_input():
 		can_cast = false
 		active_cast = "arm_2"
 		arm_2_weapon.trigger(face_direction)
+		if abs(face_direction.y) > abs(face_direction.x):
+			if face_direction.y > 0:
+				set_animation("attack_down")
+			else:
+				set_animation("attack_up")
+		else:
+			set_animation("attack_right")
+			
+	if Input.is_action_pressed("arm_3") and can_cast and arm_3_weapon != null:
+		can_cast = false
+		active_cast = "arm_3"
+		arm_3_weapon.trigger(face_direction)
 		if abs(face_direction.y) > abs(face_direction.x):
 			if face_direction.y > 0:
 				set_animation("attack_down")
