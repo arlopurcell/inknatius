@@ -93,7 +93,7 @@ static func new_level(depth: int) -> Level:
 			if tile_arr[x][y] == TileType.FLOOR:
 				if x == 0 || y == 0 || x == level_width - 1 || y == level_height - 1:
 					tile_arr[x][y] = TileType.EDGE
-				elif tile_arr[x-1][y] == TileType.WALL or tile_arr[x+1][y] == TileType.WALL or tile_arr[x][y-1] == TileType.WALL or tile_arr[x][y+1] == TileType.WALL:
+				elif tile_arr[x-1][y] == TileType.WALL or tile_arr[x+1][y] == TileType.WALL or tile_arr[x][y-1] == TileType.WALL or tile_arr[x][y+1] == TileType.WALL or tile_arr[x-1][y-1] == TileType.WALL or tile_arr[x+1][y-1] == TileType.WALL or tile_arr[x-1][y+1] == TileType.WALL or tile_arr[x+1][y+1] == TileType.WALL:
 					tile_arr[x][y] = TileType.EDGE
 	
 	var tiles: TileMapLayer = level.get_child(0)

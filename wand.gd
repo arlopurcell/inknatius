@@ -2,7 +2,7 @@ class_name Wand
 extends Node2D
 
 var mana_cost = 20
-var power = 20.0
+var power = 50.0
 var range = 400.0
 var projectile_speed = 400
 var radius = 60.0
@@ -14,6 +14,11 @@ signal attack_finished
 func _ready() -> void:
 	# TODO make handle and head different colors?
 	$Sprite2D.modulate = Color(0.6, 0.4, 0.7) # brown
+
+func configure(params: Dictionary) -> void:
+	var speed_scale = params.get("speed_scale", 1.0)
+	$AnimationPlayer.speed_scale = speed_scale
+
 
 func _on_animation_finished(anim_name: StringName) -> void:
 	attack_finished.emit()

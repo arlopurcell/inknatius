@@ -19,9 +19,7 @@ signal health_changed
 signal mana_changed
 signal died
 
-var arm_1_weapon = null
-var arm_2_weapon = null
-var arm_3_weapon = null
+var arm_weapons = [null, null, null]
 
 const dead_zone_threshold = 0.2
 
@@ -37,23 +35,14 @@ func _ready() -> void:
 	$BeltSprite.play()
 	
 	# temp add sword on arm 1
-	var sword_scene = load("res://sword.tscn")
-	arm_1_weapon = sword_scene.instantiate()
-	arm_1_weapon.attack_finished.connect(_on_attack_finished)
-	add_child(arm_1_weapon)
+	set_arm_weapon(0, load("res://blink_wand.tscn"))
+	set_arm_weapon(1, load("res://wand.tscn"))
+	set_arm_weapon(2, load("res://sword.tscn"))
 
-	# temp add wand on arm 2
-	var wand_scene = load("res://wand.tscn")
-	arm_2_weapon = wand_scene.instantiate()
-	arm_2_weapon.attack_finished.connect(_on_attack_finished)
-	add_child(arm_2_weapon)
-	
-	# temp add blinkn on arm 3
-	var blink_scene = load("res://blink_wand.tscn")
-	arm_3_weapon = blink_scene.instantiate()
-	arm_3_weapon.attack_finished.connect(_on_attack_finished)
-	add_child(arm_3_weapon)
-
+func set_arm_weapon(arm_index: int, scene: Resource) -> void:
+	arm_weapons[arm_index] = scene.instantiate()
+	arm_weapons[arm_index].attack_finished.connect(_on_attack_finished)
+	add_child(arm_weapons[arm_index])
 
 func set_animation(animation: String):
 	$BodySprite.play(animation)
@@ -86,39 +75,39 @@ func get_input():
 	if active_cast == null:
 		if in_dead_zone:
 			set_animation("idle")
+			velocity = Vector2.ZERO
+
 		else:
 			set_animation("move")
-	
-	if not in_dead_zone:
-		velocity = input_direction * speed
-		face_direction = input_direction.normalized()
-		if input_direction.x > 0:
-			set_animation_flip_h(false)
-		elif input_direction.x < 0:
-			set_animation_flip_h(true)
+			velocity = input_direction * speed
+			face_direction = input_direction.normalized()
+			if input_direction.x > 0:
+				set_animation_flip_h(false)
+			elif input_direction.x < 0:
+				set_animation_flip_h(true)
 	else:
 		velocity = Vector2.ZERO
 	
 	# casting
-	if Input.is_action_pressed("arm_1") and can_cast and arm_1_weapon != null:
-		if use_mana(arm_1_weapon.mana_cost):
+	if Input.is_action_pressed("arm_1") and can_cast and arm_weapons[0] != null:
+		if use_mana(arm_weapons[0].mana_cost):
 			can_cast = false
 			active_cast = "arm_1"
-			arm_1_weapon.trigger(face_direction)
+			arm_weapons[0].trigger(face_direction)
 			set_animation_for_cast()
 			
-	if Input.is_action_pressed("arm_2") and can_cast and arm_2_weapon != null:
-		if use_mana(arm_2_weapon.mana_cost):
+	if Input.is_action_pressed("arm_2") and can_cast and arm_weapons[1] != null:
+		if use_mana(arm_weapons[1].mana_cost):
 			can_cast = false
 			active_cast = "arm_2"
-			arm_2_weapon.trigger(face_direction)
+			arm_weapons[1].trigger(face_direction)
 			set_animation_for_cast()
 			
-	if Input.is_action_pressed("arm_3") and can_cast and arm_3_weapon != null:
-		if use_mana(arm_3_weapon.mana_cost):
+	if Input.is_action_pressed("arm_3") and can_cast and arm_weapons[2] != null:
+		if use_mana(arm_weapons[2].mana_cost):
 			can_cast = false
 			active_cast = "arm_3"
-			arm_3_weapon.trigger(face_direction)
+			arm_weapons[2].trigger(face_direction)
 			set_animation_for_cast()
 
 func use_mana(cost: int) -> bool:
