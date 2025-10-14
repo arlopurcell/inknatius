@@ -329,14 +329,15 @@ collision_mask = 2
 script = ExtResource("1_e4ynd")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-position = Vector2(40, 0)
-polygon = PackedVector2Array(0, -5.5, 25, -30, 40, 0, 25, 30, 0, 5.5)
+position = Vector2(-40, 0)
+rotation = 3.14159
+polygon = PackedVector2Array(13, -24, 58, -68, 83, 1, 55, 68, 13, 23)
 disabled = true
 
 [node name="Sprite" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(30, 0)
-rotation = -0.0872665
+position = Vector2(-30, 0)
+rotation = 0.0872665
 texture = ExtResource("1_74bdg")
 offset = Vector2(0, -60)
 

@@ -33,4 +33,8 @@ func trigger(face_direction: Vector2) -> void:
 
 func fire() -> void:
 	var player: Player = get_parent()
-	player.position += face_direction * range
+	player.velocity = face_direction * range * 100
+	player.set_collision_mask_value(2, false)
+	player.move_and_slide()
+	player.set_collision_mask_value(2, true)
+	player.velocity = Vector2.ZERO

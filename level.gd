@@ -21,7 +21,7 @@ const tile_size = 32
 
 enum TileType { FLOOR, WALL, EDGE }
 
-static func new_level(depth: int) -> Level:
+static func new_level(depth: int, old_player: Player) -> Level:
 	var level_scene = load("res://level.tscn")
 	var mob_scene = load("res://mob.tscn")
 	var level: Level = level_scene.instantiate()
@@ -75,6 +75,9 @@ static func new_level(depth: int) -> Level:
 		if i == 0:
 			# put the player in the middle of the first room
 			var player: Player = level.get_child(1)
+			if old_player != null:
+				player.current_health = old_player.current_health
+				player.health_changed.emit()
 			player.position = Vector2(room_center_x * tile_size as float, room_center_y * tile_size as float)
 		else:
 			# add some enemies to other rooms
@@ -132,7 +135,7 @@ func _process(delta: float) -> void:
 		$PauseMenu/CenterContainer/VBoxContainer/Resume.grab_focus()
 	if Input.is_action_just_pressed("interact"):
 		if is_on_exit_portal:
-			var new_level = Level.new_level(depth + 1)
+			var new_level = Level.new_level(depth + 1, $Player)
 
 			var tree = get_tree()
 			var cur_scene = tree.get_current_scene()
