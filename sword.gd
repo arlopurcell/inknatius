@@ -5,6 +5,9 @@ var power = 20.0
 signal attack_finished
 var mana_cost = 0
 
+# not a toggle wand
+const is_on = false
+
 func _ready() -> void:
 	$Sprite.modulate = Color(0.7, 0.7, 0.7) # gray
 

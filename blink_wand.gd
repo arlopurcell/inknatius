@@ -6,6 +6,9 @@ var mana_cost = 10
 
 var face_direction = null
 
+# not a toggle wand
+const is_on = false
+
 signal attack_finished
 
 func _ready() -> void:

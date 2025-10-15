@@ -7,6 +7,9 @@ var range = 400.0
 var projectile_speed = 400
 var radius = 60.0
 
+# not a toggle wand
+const is_on = false
+
 var face_direction = null
 
 signal attack_finished

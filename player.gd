@@ -13,13 +13,13 @@ var current_health = max_health
 var max_mana = 300
 var current_mana = max_mana
 var mana_regen_frames = 30
-var mana_regen = 3
+var mana_regen = 2
 
 signal health_changed
 signal mana_changed
 signal died
 
-var arm_weapons = [null, null, null]
+var arm_weapons = [null, null, null, null, null, null, null, null] # 8 arms
 
 const dead_zone_threshold = 0.2
 
@@ -38,6 +38,7 @@ func _ready() -> void:
 	set_arm_weapon(0, load("res://blink_wand.tscn"))
 	set_arm_weapon(1, load("res://wand.tscn"))
 	set_arm_weapon(2, load("res://sword.tscn"))
+	set_arm_weapon(3, load("res://circle_aoe_dot_wand.tscn"))
 
 func set_arm_weapon(arm_index: int, scene: Resource) -> void:
 	arm_weapons[arm_index] = scene.instantiate()
@@ -89,25 +90,32 @@ func get_input():
 		velocity = Vector2.ZERO
 	
 	# casting
-	if Input.is_action_pressed("arm_1") and can_cast and arm_weapons[0] != null:
+	if Input.is_action_pressed("arm_0") and can_cast and arm_weapons[0] != null:
 		if use_mana(arm_weapons[0].mana_cost):
 			can_cast = false
-			active_cast = "arm_1"
+			active_cast = "arm_0"
 			arm_weapons[0].trigger(face_direction)
 			set_animation_for_cast()
 			
-	if Input.is_action_pressed("arm_2") and can_cast and arm_weapons[1] != null:
+	if Input.is_action_pressed("arm_1") and can_cast and arm_weapons[1] != null:
 		if use_mana(arm_weapons[1].mana_cost):
 			can_cast = false
-			active_cast = "arm_2"
+			active_cast = "arm_1"
 			arm_weapons[1].trigger(face_direction)
 			set_animation_for_cast()
 			
-	if Input.is_action_pressed("arm_3") and can_cast and arm_weapons[2] != null:
+	if Input.is_action_pressed("arm_2") and can_cast and arm_weapons[2] != null:
 		if use_mana(arm_weapons[2].mana_cost):
 			can_cast = false
-			active_cast = "arm_3"
+			active_cast = "arm_2"
 			arm_weapons[2].trigger(face_direction)
+			set_animation_for_cast()
+
+	if Input.is_action_pressed("arm_3") and can_cast and arm_weapons[3] != null:
+		if use_mana(arm_weapons[3].mana_cost):
+			can_cast = false
+			active_cast = "arm_3"
+			arm_weapons[3].trigger(face_direction)
 			set_animation_for_cast()
 
 func use_mana(cost: int) -> bool:
@@ -129,17 +137,7 @@ func set_animation_for_cast() -> void:
 
 func _physics_process(delta):
 	get_input()
-	do_passive()
 	move_and_slide()
-
-func do_passive() -> void:
-	# Regen mana
-	if Engine.get_process_frames() % mana_regen_frames == 0:
-		var new_mana = current_mana + mana_regen
-		new_mana = min(max_mana, new_mana)
-		if new_mana != current_mana:
-			current_mana = new_mana
-			mana_changed.emit()
 
 func _on_death_animation_finished(anim_name: StringName) -> void:
 	died.emit()
@@ -149,3 +147,22 @@ func _on_attack_finished() -> void:
 	can_cast = true
 	active_cast = null
 	set_animation("idle")
+
+
+func _per_second_process() -> void:
+	# Regen mana
+	var new_mana = current_mana + mana_regen
+	# deduct toggled wands
+	for wand in arm_weapons:
+		if wand and wand.is_on:
+			new_mana -= wand.mana_per_second
+	
+	new_mana = min(max_mana, new_mana)
+	if new_mana != current_mana:
+		current_mana = new_mana
+		mana_changed.emit()
+		
+	# do toggled wand effects
+	for wand in arm_weapons:
+		if wand and wand.is_on:
+			wand.do_effect()
