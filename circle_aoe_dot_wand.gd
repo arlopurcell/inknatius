@@ -43,9 +43,7 @@ func do_effect() -> void:
 		enemy.take_damage(power)
 
 func _on_body_entered(body: Node2D) -> void:
-	print("something entered aoe")
 	if body.is_in_group("hurtbox") and body.is_in_group("enemy_mob"):
-		print("enemy entered aoe")
 		enemies_in_aoe[body] = true
 
 

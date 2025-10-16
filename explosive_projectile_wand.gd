@@ -1,11 +1,12 @@
-class_name Wand
+class_name ExplosiveProjectileWand
 extends Node2D
 
 var mana_cost = 20
 var power = 50.0
 var range = 400.0
 var projectile_speed = 400
-var diameter = 60.0
+var diameter = 40.0
+var explosion_diameter = 100.0
 
 # not a toggle wand
 const is_on = false
@@ -42,12 +43,13 @@ func trigger(face_direction: Vector2) -> void:
 
 
 func fire() -> void:
-	var projectile = Projectile.fire(
+	var projectile = ExplosiveProjectile.fire(
 		global_position + face_direction * 100.0, 
 		face_direction * projectile_speed, 
 		range, 
 		power,
 		diameter,
+		explosion_diameter,
 		Color.ORANGE,
 	)
 	get_parent().get_parent().add_child(projectile)

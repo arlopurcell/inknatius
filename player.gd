@@ -36,7 +36,7 @@ func _ready() -> void:
 	
 	# temp add sword on arm 1
 	set_arm_weapon(0, load("res://blink_wand.tscn"))
-	set_arm_weapon(1, load("res://wand.tscn"))
+	set_arm_weapon(1, load("res://explosive_projectile_wand.tscn"))
 	set_arm_weapon(2, load("res://sword.tscn"))
 	set_arm_weapon(3, load("res://circle_aoe_dot_wand.tscn"))
 

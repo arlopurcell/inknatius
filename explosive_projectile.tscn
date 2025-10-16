@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dvn1n5ggoaw2d"]
+[gd_scene load_steps=7 format=3 uid="uid://cla5yxneudaim"]
 
-[ext_resource type="Script" uid="uid://byxaneamdfag8" path="res://projectile.gd" id="1_a85iw"]
-[ext_resource type="Texture2D" uid="uid://deo15n1nsh7ah" path="res://assets/projectile.png" id="2_qxf0c"]
+[ext_resource type="Script" uid="uid://dtbabmwlw6a75" path="res://explosive_projectile.gd" id="1_xi4ic"]
+[ext_resource type="Texture2D" uid="uid://deo15n1nsh7ah" path="res://assets/projectile.png" id="2_xg3jw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_akgne"]
 radius = 30.0
@@ -11,7 +11,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/path = NodePath("ProjectileSprite:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -20,6 +20,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [0.0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ProjectileSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_dgwo2"]
 resource_name = "spin"
@@ -27,7 +39,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/path = NodePath("ProjectileSprite:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -36,6 +48,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [0.0, 6.28319]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ProjectileSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2xblw"]
 _data = {
@@ -43,17 +67,17 @@ _data = {
 &"spin": SubResource("Animation_dgwo2")
 }
 
-[node name="Projectile" type="RigidBody2D"]
+[node name="ExplosiveProjectile" type="RigidBody2D"]
 collision_layer = 4
 collision_mask = 3
 gravity_scale = 0.0
-script = ExtResource("1_a85iw")
+script = ExtResource("1_xi4ic")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_akgne")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_qxf0c")
+[node name="ProjectileSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_xg3jw")
 flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
