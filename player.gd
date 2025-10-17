@@ -34,16 +34,16 @@ func _ready() -> void:
 	$HatSprite.play()
 	$BeltSprite.play()
 	
-	# temp add sword on arm 1
-	set_arm_weapon(0, load("res://blink_wand.tscn"))
-	set_arm_weapon(1, load("res://explosive_projectile_wand.tscn"))
-	set_arm_weapon(2, load("res://sword.tscn"))
-	set_arm_weapon(3, load("res://circle_aoe_dot_wand.tscn"))
+	# temp add weapons
+	set_arm_weapon(0, load("res://blink_wand.tscn").instantiate().configure({}))
+	set_arm_weapon(1, load("res://explosive_projectile_wand.tscn").instantiate().configure({}))
+	set_arm_weapon(2, load("res://sword.tscn").instantiate().configure({}))
+	set_arm_weapon(3, load("res://circle_aoe_dot_wand.tscn").instantiate().configure({"aoe_radius": 100.0}))
 
-func set_arm_weapon(arm_index: int, scene: Resource) -> void:
-	arm_weapons[arm_index] = scene.instantiate()
-	arm_weapons[arm_index].attack_finished.connect(_on_attack_finished)
-	add_child(arm_weapons[arm_index])
+func set_arm_weapon(arm_index: int, weapon: Node) -> void:
+	arm_weapons[arm_index] = weapon
+	weapon.attack_finished.connect(_on_attack_finished)
+	add_child(weapon)
 
 func set_animation(animation: String):
 	$BodySprite.play(animation)
@@ -58,7 +58,6 @@ func set_animation_flip_h(flip_h: bool):
 	$BeltSprite.flip_h = flip_h
 	
 func take_damage(damage: int) -> void:
-	var old_health = current_health
 	current_health -= damage
 	health_changed.emit()
 
@@ -135,11 +134,11 @@ func set_animation_for_cast() -> void:
 	else:
 		set_animation("attack_right")
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	get_input()
 	move_and_slide()
 
-func _on_death_animation_finished(anim_name: StringName) -> void:
+func _on_death_animation_finished(_anim_name: StringName) -> void:
 	died.emit()
 
 

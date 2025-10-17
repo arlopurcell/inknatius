@@ -3,7 +3,7 @@ extends RigidBody2D
 
 var projectile_speed = 300.0
 var power = 20.0
-var range = 2000.0
+var spell_range = 2000.0
 var diameter = 20.0
 var color = Color.ORANGE_RED
 var explosion_diameter = 100.0
@@ -11,14 +11,14 @@ var explosion_diameter = 100.0
 #var velocity = null
 var start_position = Vector2.ZERO
 
-static func fire(position: Vector2, velocity: Vector2, range: float, power: float, diameter: float, explosion_diameter: float, color: Color) -> ExplosiveProjectile:
+static func fire(position: Vector2, velocity: Vector2, spell_range: float, power: float, diameter: float, explosion_diameter: float, color: Color) -> ExplosiveProjectile:
 	var scene = load("res://explosive_projectile.tscn")
 	var projectile: ExplosiveProjectile = scene.instantiate()
 	projectile.global_position = position
 	projectile.start_position = position
 	projectile.linear_velocity = velocity
 
-	projectile.range = range
+	projectile.spell_range = spell_range
 	projectile.power = power
 	projectile.diameter = diameter
 	projectile.explosion_diameter = explosion_diameter
@@ -41,7 +41,7 @@ func _physics_process(delta):
 	if collision:
 		do_collision(collision.get_collider())
 	
-	if global_position.distance_to(start_position) > range:
+	if global_position.distance_to(start_position) > spell_range:
 		explode()
 
 func do_collision(body: Node) -> void:

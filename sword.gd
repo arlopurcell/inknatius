@@ -2,21 +2,26 @@ class_name Sword
 extends Area2D
 
 var power = 20.0
-signal attack_finished
 var mana_cost = 0
+
 
 # not a toggle wand
 const is_on = false
+signal attack_finished
 
-func _ready() -> void:
-	$Sprite.modulate = Color(0.7, 0.7, 0.7) # gray
+func configure(params: Dictionary) -> Sword:
+	power = params.get("power", 20.0)
+	mana_cost = params.get("mana_cost", 0)
+	$AnimationPlayer.speed_scale = params.get("speed_scale", 1.0)
+	$Sprite.modulate = params.get("color", Color(0.7, 0.7, 0.7)) # default gray
 
+	return self
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("hurtbox") and body.is_in_group("enemy_mob"):
 		body.take_damage(power)
 
-func _on_animation_finished(anim_name: StringName) -> void:
+func _on_animation_finished(_anim_name: StringName) -> void:
 	attack_finished.emit()
 	
 func trigger(face_direction: Vector2) -> void:

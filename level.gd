@@ -21,11 +21,11 @@ const tile_size = 32
 
 enum TileType { FLOOR, WALL, EDGE }
 
-static func new_level(depth: int, old_player: Player) -> Level:
+static func new_level(new_depth: int, old_player: Player) -> Level:
 	var level_scene = load("res://level.tscn")
 	var mob_scene = load("res://mob.tscn")
 	var level: Level = level_scene.instantiate()
-	level.depth = depth
+	level.depth = new_depth
 	
 	var tile_arr = [];
 	# first make everything a wall
@@ -125,7 +125,7 @@ var is_on_exit_portal = false
 func _ready() -> void:
 	$HUD/LevelNumberLabel.text = "Level %d" % depth
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	#if Input.is_action_just_pressed("spawn_enemy"):
 	#	var mob = mob_scene.instantiate()
 	#	add_child(mob)
@@ -135,13 +135,13 @@ func _process(delta: float) -> void:
 		$PauseMenu/CenterContainer/VBoxContainer/Resume.grab_focus()
 	if Input.is_action_just_pressed("interact"):
 		if is_on_exit_portal:
-			var new_level = Level.new_level(depth + 1, $Player)
+			var next_level = Level.new_level(depth + 1, $Player)
 
 			var tree = get_tree()
 			var cur_scene = tree.get_current_scene()
-			tree.get_root().add_child(new_level)
+			tree.get_root().add_child(next_level)
 			tree.get_root().remove_child(cur_scene)
-			tree.set_current_scene(new_level)
+			tree.set_current_scene(next_level)
 
 func _on_mob_died(location: Vector2) -> void:
 	enemy_count -= 1

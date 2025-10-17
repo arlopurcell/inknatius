@@ -34,7 +34,7 @@ func take_damage(damage: int) -> void:
 	health_changed.emit(old_health, current_health)
 
 
-func _on_health_changed(old_value: int, new_value: int) -> void:
+func _on_health_changed(_old_value: int, new_value: int) -> void:
 	$HealthBar.value = (current_health as float / max_health as float) * 100.0
 	if new_value <= 0:
 		died.emit(global_position)
@@ -114,9 +114,8 @@ func _physics_process(delta):
 	move_and_collide(velocity * delta)
 
 
-func _on_attack_animation_finished(anim_name: StringName) -> void:
+func _on_attack_animation_finished(_anim_name: StringName) -> void:
 	is_attacking = false
-
 
 func _on_vision_collider_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player_mob"):

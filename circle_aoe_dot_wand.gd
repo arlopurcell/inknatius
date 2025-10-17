@@ -2,22 +2,31 @@ class_name CircleAoeDotWand
 extends Node2D
 
 var power = 10.0
-signal attack_finished
 var mana_cost = 0
-var is_on = false
-var mana_per_second = 2
+var mana_per_second = 4
 var aoe_radius = 50.0
 
+var is_on = false
 var enemies_in_aoe = {}
+signal attack_finished
 
-func _ready() -> void:
-	# TODO make handle and head different colors?
-	$Sprite2D.modulate = Color(0.6, 0.4, 0.7) # brown
-	$AnimationPlayer.speed_scale = 2.0
-	$AoeSprite.modulate = Color(1.0, 0.0, 0.0) # red
-	# TODO set sizes of aoesprite and collider
+func configure(params: Dictionary) -> CircleAoeDotWand:
+	power = params.get("power", 10.0)
+	mana_cost = params.get("mana_cost", 0)
+	mana_per_second = params.get("mana_per_second", 2)
+	aoe_radius = params.get("aoe_radius", 50.0)
+	$AnimationPlayer.speed_scale = params.get("speed_scale", 2.0)
+	$Sprite.modulate = params.get("color", Color(0.6, 0.4, 0.7)) # default brown
+	$AoeSprite.modulate = params.get("aoe_color", Color(1.0, 0.4, 0.0)) # default orange
 
-func _on_animation_finished(anim_name: StringName) -> void:
+	$CollisionShape2D.shape.radius = aoe_radius
+	var scale = (aoe_radius * 2) / 128.0 # that's how big the sprite is
+	$AoeSprite.scale.x = scale
+	$AoeSprite.scale.y = scale
+	
+	return self
+
+func _on_animation_finished(_anim_name: StringName) -> void:
 	attack_finished.emit()
 	
 func trigger(face_direction: Vector2) -> void:
@@ -46,7 +55,5 @@ func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("hurtbox") and body.is_in_group("enemy_mob"):
 		enemies_in_aoe[body] = true
 
-
 func _on_body_exited(body: Node2D) -> void:
-	print("enemy left aoe")
 	enemies_in_aoe.erase(body)

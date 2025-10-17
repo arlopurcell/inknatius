@@ -4,7 +4,7 @@ extends Node2D
 var mana_cost = 20
 var power = 50.0
 var range = 400.0
-var projectile_speed = 400
+var projectile_speed = 400.0
 var diameter = 60.0
 
 # not a toggle wand
@@ -14,14 +14,16 @@ var face_direction = null
 
 signal attack_finished
 
-func _ready() -> void:
-	# TODO make handle and head different colors?
-	$Sprite2D.modulate = Color(0.6, 0.4, 0.7) # brown
-
-func configure(params: Dictionary) -> void:
-	var speed_scale = params.get("speed_scale", 1.0)
-	$AnimationPlayer.speed_scale = speed_scale
-
+func configure(params: Dictionary) -> Wand:
+	power = params.get("power", 50.0)
+	mana_cost = params.get("mana_cost", 20)
+	range = params.get("range", 400.0)
+	projectile_speed = params.get("projectile_speed", 400.0)
+	diameter = params.get("diameter", 60.0)
+	$AnimationPlayer.speed_scale = params.get("speed_scale", 1.0)
+	$Sprite.modulate = params.get("color", Color(0.6, 0.4, 0.7)) # default brown
+	
+	return self
 
 func _on_animation_finished(anim_name: StringName) -> void:
 	attack_finished.emit()
