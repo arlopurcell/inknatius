@@ -122,7 +122,6 @@ var is_on_exit_portal = false
 
 func _ready() -> void:
 	$HUD/LevelNumberLabel.text = "Level %d" % depth
-	$InventoryMenu.configure($Player)
 
 func _process(_delta: float) -> void:
 	#if Input.is_action_just_pressed("spawn_enemy"):
@@ -145,6 +144,7 @@ func _process(_delta: float) -> void:
 		get_tree().paused = true
 		# TODO instantiate a "InventoryArmMenuItem" scene for each arm and add to right place (different depending on arm empty or not)
 		# TODO instantiate a "InventoryWeaponMenuItem" scene for each inventory weapon and add to right place on menu
+		$InventoryMenu.configure($Player)
 		$InventoryMenu.show()
 		$InventoryMenu/ArmsContainer/Arm0/Button.grab_focus()
 

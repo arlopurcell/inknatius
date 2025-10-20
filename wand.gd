@@ -3,7 +3,7 @@ extends Node2D
 
 var mana_cost = 20
 var power = 50.0
-var range = 400.0
+var spell_range = 400.0
 var projectile_speed = 400.0
 var diameter = 60.0
 var display_name = "Projectile"
@@ -16,9 +16,10 @@ var face_direction = null
 signal attack_finished
 
 func configure(params: Dictionary) -> Wand:
+	display_name = params.get("display_name", "Projectile")
 	power = params.get("power", 50.0)
 	mana_cost = params.get("mana_cost", 20)
-	range = params.get("range", 400.0)
+	spell_range = params.get("spell_range", 400.0)
 	projectile_speed = params.get("projectile_speed", 400.0)
 	diameter = params.get("diameter", 60.0)
 	$AnimationPlayer.speed_scale = params.get("speed_scale", 1.0)
@@ -26,7 +27,16 @@ func configure(params: Dictionary) -> Wand:
 	
 	return self
 
-func _on_animation_finished(anim_name: StringName) -> void:
+func get_stats() -> Dictionary:
+	return {
+		"Mana Cost": mana_cost,
+		"Damage": power,
+		"Range": spell_range,
+		"Projectile Speed": projectile_speed,
+		"Projectile Diameter": diameter,
+	}
+
+func _on_animation_finished(_anim_name: StringName) -> void:
 	attack_finished.emit()
 	
 func trigger(face_direction: Vector2) -> void:
@@ -48,7 +58,7 @@ func fire() -> void:
 	var projectile = Projectile.fire(
 		global_position + face_direction * 100.0, 
 		face_direction * projectile_speed, 
-		range, 
+		spell_range, 
 		power,
 		diameter,
 		Color.ORANGE,

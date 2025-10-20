@@ -17,6 +17,7 @@ var face_direction = null
 signal attack_finished
 
 func configure(params: Dictionary) -> ExplosiveProjectileWand:
+	display_name = params.get("display_name", "Explosive Projectile")
 	power = params.get("power", 50.0)
 	mana_cost = params.get("mana_cost", 40)
 	spell_range = params.get("spell_range", 400.0)
@@ -28,6 +29,15 @@ func configure(params: Dictionary) -> ExplosiveProjectileWand:
 
 	return self
 
+func get_stats() -> Dictionary:
+	return {
+		"Mana Cost": mana_cost,
+		"Damage": power,
+		"Range": spell_range,
+		"Projectile Speed": projectile_speed,
+		"Projectile Diameter": diameter,
+		"Explosion Diameter": explosion_diameter,
+	}
 
 func _on_animation_finished(_anim_name: StringName) -> void:
 	attack_finished.emit()

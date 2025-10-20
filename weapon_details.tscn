@@ -17,31 +17,10 @@ layout_mode = 2
 
 [node name="Name" type="Label" parent="CenterContainer"]
 layout_mode = 2
-text = "Sword"
+text = "None Selected"
 label_settings = SubResource("LabelSettings_oddhp")
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="StatContainer" type="GridContainer" parent="."]
 layout_mode = 2
+theme_override_constants/h_separation = 20
 columns = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="GridContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="GridContainer/HBoxContainer"]
-layout_mode = 2
-text = "Power: "
-
-[node name="Label2" type="Label" parent="GridContainer/HBoxContainer"]
-layout_mode = 2
-text = "20.0"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="GridContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="GridContainer/HBoxContainer2"]
-layout_mode = 2
-text = "Mana Cost: "
-
-[node name="Label2" type="Label" parent="GridContainer/HBoxContainer2"]
-layout_mode = 2
-text = "0"

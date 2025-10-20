@@ -13,12 +13,19 @@ const is_on = false
 signal attack_finished
 
 func configure(params: Dictionary) -> BlinkWand:
+	display_name = params.get("display_name", "Blink")
 	mana_cost = params.get("mana_cost", 10)
 	spell_range = params.get("spell_range", 100.0)
 	$AnimationPlayer.speed_scale = params.get("speed_scale", 2.0)
 	$Sprite.modulate = params.get("color", Color(0.6, 0.4, 0.7)) # default brown
 	
 	return self
+
+func get_stats() -> Dictionary:
+	return {
+		"Range": spell_range,
+		"Mana Cost": mana_cost,
+	}
 
 func _on_animation_finished(_anim_name: StringName) -> void:
 	attack_finished.emit()

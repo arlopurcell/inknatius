@@ -12,6 +12,7 @@ var enemies_in_aoe = {}
 signal attack_finished
 
 func configure(params: Dictionary) -> CircleAoeDotWand:
+	display_name = params.get("display_name", "Circle AEO DOT")
 	power = params.get("power", 10.0)
 	mana_cost = params.get("mana_cost", 0)
 	mana_per_second = params.get("mana_per_second", 2)
@@ -26,6 +27,15 @@ func configure(params: Dictionary) -> CircleAoeDotWand:
 	$AoeSprite.scale.y = scale
 	
 	return self
+	
+func get_stats() -> Dictionary:
+	return {
+		"Toggle Wand": "",
+		"Initial Mana Cost": mana_cost,
+		"Damage Per Second": power,
+		"Mana Per Second": mana_per_second,
+		"AOE Radius": aoe_radius,
+	}
 
 func _on_animation_finished(_anim_name: StringName) -> void:
 	attack_finished.emit()

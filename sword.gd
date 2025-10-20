@@ -10,12 +10,19 @@ const is_on = false
 signal attack_finished
 
 func configure(params: Dictionary) -> Sword:
+	display_name = params.get("display_name", "Sword")
 	power = params.get("power", 20.0)
 	mana_cost = params.get("mana_cost", 0)
 	$AnimationPlayer.speed_scale = params.get("speed_scale", 1.0)
 	$Sprite.modulate = params.get("color", Color(0.7, 0.7, 0.7)) # default gray
 
 	return self
+	
+func get_stats() -> Dictionary:
+	return {
+		"Mana Cost": mana_cost,
+		"Damage": power,
+	}
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("hurtbox") and body.is_in_group("enemy_mob"):
