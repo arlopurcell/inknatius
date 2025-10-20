@@ -1,8 +1,6 @@
 class_name Level
 extends Node2D
 
-#@export var mob_scene: PackedScene
-
 const level_width = 100
 const level_height = 100
 
@@ -124,6 +122,7 @@ var is_on_exit_portal = false
 
 func _ready() -> void:
 	$HUD/LevelNumberLabel.text = "Level %d" % depth
+	$InventoryMenu.configure($Player)
 
 func _process(_delta: float) -> void:
 	#if Input.is_action_just_pressed("spawn_enemy"):
@@ -142,6 +141,12 @@ func _process(_delta: float) -> void:
 			tree.get_root().add_child(next_level)
 			tree.get_root().remove_child(cur_scene)
 			tree.set_current_scene(next_level)
+	if Input.is_action_just_pressed("inventory"):
+		get_tree().paused = true
+		# TODO instantiate a "InventoryArmMenuItem" scene for each arm and add to right place (different depending on arm empty or not)
+		# TODO instantiate a "InventoryWeaponMenuItem" scene for each inventory weapon and add to right place on menu
+		$InventoryMenu.show()
+		$InventoryMenu/ArmsContainer/Arm0/Button.grab_focus()
 
 func _on_mob_died(location: Vector2) -> void:
 	enemy_count -= 1

@@ -3,6 +3,7 @@ extends Node2D
 
 var spell_range = 100.0
 var mana_cost = 10
+var display_name = "Blink"
 
 var face_direction = null
 

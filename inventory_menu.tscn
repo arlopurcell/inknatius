@@ -1,0 +1,257 @@
+[gd_scene load_steps=6 format=3 uid="uid://d36aoerd3tlhw"]
+
+[ext_resource type="Script" uid="uid://b1v0ptd2i1mjc" path="res://inventory_menu.gd" id="1_1yeyp"]
+[ext_resource type="PackedScene" uid="uid://y22p8m3u4ba7" path="res://weapon_details.tscn" id="2_g76fr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nxc48"]
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_1yeyp"]
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_g76fr"]
+font_size = 24
+
+[node name="InventoryMenu" type="CanvasLayer"]
+script = ExtResource("1_1yeyp")
+
+[node name="background" type="ColorRect" parent="."]
+offset_right = 1279.0
+offset_bottom = 802.0
+color = Color(0, 0, 0, 0.501961)
+
+[node name="Purple" type="ColorRect" parent="."]
+offset_left = 1.0
+offset_top = 94.0
+offset_right = 465.0
+offset_bottom = 801.0
+color = Color(0.241133, 0.027333, 0.359058, 1)
+
+[node name="ArmDetailBkgd" type="ColorRect" parent="."]
+offset_left = 869.0
+offset_top = 99.0
+offset_right = 1278.0
+offset_bottom = 444.0
+color = Color(0.239216, 0.027451, 0.360784, 1)
+
+[node name="InventoryDetailBkgd" type="ColorRect" parent="."]
+offset_left = 871.0
+offset_top = 449.0
+offset_right = 1280.0
+offset_bottom = 794.0
+color = Color(0.109804, 0.113725, 0.541176, 1)
+
+[node name="Blue" type="ColorRect" parent="."]
+offset_left = 430.0
+offset_top = 95.0
+offset_right = 869.0
+offset_bottom = 800.0
+color = Color(0.111699, 0.114022, 0.540901, 1)
+
+[node name="InventoryTitle" type="Label" parent="."]
+offset_left = 585.0
+offset_top = 103.0
+offset_right = 697.0
+offset_bottom = 137.0
+text = "Inventory"
+label_settings = SubResource("LabelSettings_nxc48")
+
+[node name="ArmsTitle" type="Label" parent="."]
+offset_left = 204.0
+offset_top = 105.0
+offset_right = 265.0
+offset_bottom = 139.0
+text = "Arms"
+label_settings = SubResource("LabelSettings_1yeyp")
+
+[node name="ArmsContainer" type="VBoxContainer" parent="."]
+offset_left = 4.0
+offset_top = 163.0
+offset_right = 431.0
+offset_bottom = 794.0
+
+[node name="Arm0" type="HBoxContainer" parent="ArmsContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ArmsContainer/Arm0"]
+layout_mode = 2
+text = "         A ->"
+label_settings = SubResource("LabelSettings_g76fr")
+
+[node name="Button" type="Button" parent="ArmsContainer/Arm0"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../../Arm1/Button")
+text = "Dash"
+
+[node name="Arm1" type="HBoxContainer" parent="ArmsContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ArmsContainer/Arm1"]
+layout_mode = 2
+text = "         B ->"
+label_settings = SubResource("LabelSettings_g76fr")
+
+[node name="Button" type="Button" parent="ArmsContainer/Arm1"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../../Arm0/Button")
+focus_neighbor_bottom = NodePath("../../Arm2/Button")
+text = "Sword"
+
+[node name="Arm2" type="HBoxContainer" parent="ArmsContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ArmsContainer/Arm2"]
+layout_mode = 2
+text = "         X ->"
+label_settings = SubResource("LabelSettings_g76fr")
+
+[node name="Button" type="Button" parent="ArmsContainer/Arm2"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../../Arm1/Button")
+focus_neighbor_bottom = NodePath("../../Arm3/Button")
+text = "Explosive Projectile"
+
+[node name="Arm3" type="HBoxContainer" parent="ArmsContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ArmsContainer/Arm3"]
+layout_mode = 2
+text = "         Y ->"
+label_settings = SubResource("LabelSettings_g76fr")
+
+[node name="Button" type="Button" parent="ArmsContainer/Arm3"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../../Arm2/Button")
+focus_neighbor_bottom = NodePath("../../Arm4/Button")
+text = "Cirlce AOE DOT"
+
+[node name="Arm4" type="HBoxContainer" parent="ArmsContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ArmsContainer/Arm4"]
+layout_mode = 2
+text = "LR + A ->"
+label_settings = SubResource("LabelSettings_g76fr")
+
+[node name="Button" type="Button" parent="ArmsContainer/Arm4"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../../Arm3/Button")
+focus_neighbor_bottom = NodePath("../../Arm5/Button")
+text = "<Empty>"
+
+[node name="Arm5" type="HBoxContainer" parent="ArmsContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ArmsContainer/Arm5"]
+layout_mode = 2
+text = "LR + B ->"
+label_settings = SubResource("LabelSettings_g76fr")
+
+[node name="Button" type="Button" parent="ArmsContainer/Arm5"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../../Arm4/Button")
+focus_neighbor_bottom = NodePath("../../Arm6/Button")
+text = "<Empty>"
+
+[node name="Arm6" type="HBoxContainer" parent="ArmsContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ArmsContainer/Arm6"]
+layout_mode = 2
+text = "LR + X ->"
+label_settings = SubResource("LabelSettings_g76fr")
+
+[node name="Button" type="Button" parent="ArmsContainer/Arm6"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../../Arm5/Button")
+focus_neighbor_bottom = NodePath("../../Arm7/Button")
+text = "<Empty>"
+
+[node name="Arm7" type="HBoxContainer" parent="ArmsContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ArmsContainer/Arm7"]
+layout_mode = 2
+text = "LR + Y ->"
+label_settings = SubResource("LabelSettings_g76fr")
+
+[node name="Button" type="Button" parent="ArmsContainer/Arm7"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../../Arm6/Button")
+text = "<Empty>"
+
+[node name="InventoryContainer" type="VBoxContainer" parent="."]
+offset_left = 449.0
+offset_top = 157.0
+offset_right = 848.0
+offset_bottom = 777.0
+
+[node name="Item0" type="Button" parent="InventoryContainer"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Item1")
+text = "Projectile"
+
+[node name="Item1" type="Button" parent="InventoryContainer"]
+visible = false
+layout_mode = 2
+focus_neighbor_top = NodePath("../Item0")
+focus_neighbor_bottom = NodePath("../Item2")
+text = "Empty
+"
+
+[node name="Item2" type="Button" parent="InventoryContainer"]
+visible = false
+layout_mode = 2
+text = "Empty
+"
+
+[node name="Item3" type="Button" parent="InventoryContainer"]
+visible = false
+layout_mode = 2
+text = "Empty
+"
+
+[node name="Item4" type="Button" parent="InventoryContainer"]
+visible = false
+layout_mode = 2
+text = "Empty
+"
+
+[node name="Item5" type="Button" parent="InventoryContainer"]
+visible = false
+layout_mode = 2
+text = "Empty
+"
+
+[node name="Item6" type="Button" parent="InventoryContainer"]
+visible = false
+layout_mode = 2
+text = "Empty
+"
+
+[node name="Item7" type="Button" parent="InventoryContainer"]
+visible = false
+layout_mode = 2
+text = "Empty
+"
+
+[node name="ArmWeaponDetails" parent="." instance=ExtResource("2_g76fr")]
+
+[node name="InventoryWeaponDetails" parent="." instance=ExtResource("2_g76fr")]
+offset_left = 877.0
+offset_top = 452.0
+offset_right = 1277.0
+offset_bottom = 795.0
+
+[node name="Button" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "stupid test button"
+
+[connection signal="gui_input" from="ArmsContainer" to="." method="_on_arms_container_gui_input"]
+[connection signal="focus_entered" from="ArmsContainer/Arm0/Button" to="." method="_on_arm0_focus_entered"]
+[connection signal="pressed" from="ArmsContainer/Arm0/Button" to="." method="_on_arm0_button_pressed"]
+[connection signal="focus_entered" from="ArmsContainer/Arm1/Button" to="." method="_on_arm1_focus_entered"]
+[connection signal="pressed" from="ArmsContainer/Arm1/Button" to="." method="_on_arm1_button_pressed"]
+[connection signal="pressed" from="InventoryContainer/Item0" to="." method="_on_item0_button_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

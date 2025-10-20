@@ -6,6 +6,7 @@ var power = 50.0
 var range = 400.0
 var projectile_speed = 400.0
 var diameter = 60.0
+var display_name = "Projectile"
 
 # not a toggle wand
 const is_on = false

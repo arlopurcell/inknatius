@@ -20,6 +20,7 @@ signal mana_changed
 signal died
 
 var arm_weapons = [null, null, null, null, null, null, null, null] # 8 arms
+var inventory_weapons = []
 
 const dead_zone_threshold = 0.2
 
@@ -39,6 +40,8 @@ func _ready() -> void:
 	set_arm_weapon(1, load("res://explosive_projectile_wand.tscn").instantiate().configure({}))
 	set_arm_weapon(2, load("res://sword.tscn").instantiate().configure({}))
 	set_arm_weapon(3, load("res://circle_aoe_dot_wand.tscn").instantiate().configure({"aoe_radius": 100.0}))
+	
+	inventory_weapons.append(load("res://wand.tscn").instantiate().configure({}))
 
 func set_arm_weapon(arm_index: int, weapon: Node) -> void:
 	arm_weapons[arm_index] = weapon

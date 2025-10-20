@@ -7,6 +7,7 @@ var spell_range = 400.0
 var projectile_speed = 400
 var diameter = 40.0
 var explosion_diameter = 100.0
+var display_name = "Explosive Projectile"
 
 # not a toggle wand
 const is_on = false

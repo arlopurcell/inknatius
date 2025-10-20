@@ -3,7 +3,7 @@ extends Area2D
 
 var power = 20.0
 var mana_cost = 0
-
+var display_name = "Sword"
 
 # not a toggle wand
 const is_on = false

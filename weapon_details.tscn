@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://y22p8m3u4ba7"]
+
+[ext_resource type="Script" uid="uid://db133c38i50vf" path="res://weapon_details.gd" id="1_mipwa"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_oddhp"]
+font_size = 24
+
+[node name="WeaponDetails" type="VBoxContainer"]
+offset_left = 873.0
+offset_top = 104.0
+offset_right = 1273.0
+offset_bottom = 447.0
+script = ExtResource("1_mipwa")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="CenterContainer"]
+layout_mode = 2
+text = "Sword"
+label_settings = SubResource("LabelSettings_oddhp")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GridContainer/HBoxContainer"]
+layout_mode = 2
+text = "Power: "
+
+[node name="Label2" type="Label" parent="GridContainer/HBoxContainer"]
+layout_mode = 2
+text = "20.0"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GridContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Mana Cost: "
+
+[node name="Label2" type="Label" parent="GridContainer/HBoxContainer2"]
+layout_mode = 2
+text = "0"

@@ -1,9 +1,10 @@
-[gd_scene load_steps=23 format=3 uid="uid://bxlolmtb5eb0d"]
+[gd_scene load_steps=24 format=3 uid="uid://bxlolmtb5eb0d"]
 
 [ext_resource type="Script" uid="uid://b03umnjhcut2d" path="res://level.gd" id="1_1ainy"]
 [ext_resource type="Texture2D" uid="uid://bbogx0s35kmhn" path="res://assets/tiles.png" id="3_0b4ue"]
 [ext_resource type="Texture2D" uid="uid://dyesd4pnje7gs" path="res://assets/portal.png" id="5_1ainy"]
 [ext_resource type="Script" uid="uid://btkwljg8ks2f4" path="res://pause_menu.gd" id="5_f2txt"]
+[ext_resource type="PackedScene" uid="uid://d36aoerd3tlhw" path="res://inventory_menu.tscn" id="6_1ainy"]
 [ext_resource type="PackedScene" uid="uid://bmvx4xqqrsgb0" path="res://player.tscn" id="6_2orkt"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1ainy"]
@@ -315,6 +316,9 @@ libraries = {
 position = Vector2(-4, 7)
 shape = SubResource("CircleShape2D_f2txt")
 disabled = true
+
+[node name="InventoryMenu" parent="." instance=ExtResource("6_1ainy")]
+visible = false
 
 [connection signal="died" from="Player" to="." method="_on_player_died"]
 [connection signal="health_changed" from="Player" to="." method="_on_player_health_changed"]
