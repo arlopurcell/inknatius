@@ -101,33 +101,20 @@ func get_input():
 		velocity = Vector2.ZERO
 	
 	# casting
-	if Input.is_action_pressed("arm_0") and can_cast and arm_weapons[0] != null:
-		if use_mana(arm_weapons[0].mana_cost):
-			can_cast = false
-			active_cast = "arm_0"
-			arm_weapons[0].trigger(face_direction)
-			set_animation_for_cast()
-			
-	if Input.is_action_pressed("arm_1") and can_cast and arm_weapons[1] != null:
-		if use_mana(arm_weapons[1].mana_cost):
-			can_cast = false
-			active_cast = "arm_1"
-			arm_weapons[1].trigger(face_direction)
-			set_animation_for_cast()
-			
-	if Input.is_action_pressed("arm_2") and can_cast and arm_weapons[2] != null:
-		if use_mana(arm_weapons[2].mana_cost):
-			can_cast = false
-			active_cast = "arm_2"
-			arm_weapons[2].trigger(face_direction)
-			set_animation_for_cast()
+	handle_arm_input(0)
+	handle_arm_input(1)
+	handle_arm_input(2)
+	handle_arm_input(3)
 
-	if Input.is_action_pressed("arm_3") and can_cast and arm_weapons[3] != null:
-		if use_mana(arm_weapons[3].mana_cost):
+func handle_arm_input(index: int) -> void:
+	if Input.is_action_pressed("arm_" + str(index)) and can_cast and arm_weapons[index] != null:
+		if use_mana(arm_weapons[index].mana_cost):
 			can_cast = false
-			active_cast = "arm_3"
-			arm_weapons[3].trigger(face_direction)
+			active_cast = "arm_" + str(index)
+			arm_weapons[index].trigger(face_direction)
 			set_animation_for_cast()
+		else:
+			show_message("Insufficient Mana")
 
 func use_mana(cost: int) -> bool:
 	if current_mana >= cost:
@@ -177,3 +164,11 @@ func _per_second_process() -> void:
 	for wand in arm_weapons:
 		if wand and wand.is_on:
 			wand.do_effect()
+
+func show_message(msg: String) -> void:
+	$MessageLabel.text = msg
+	$MessageLabel.show()
+	$MessageTimer.start(1.0)
+
+func _on_message_timer_timeout() -> void:
+	$MessageLabel.hide()
