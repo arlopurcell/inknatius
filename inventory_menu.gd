@@ -156,7 +156,12 @@ func _on_item_button_pressed(index: int) -> void:
 	else:
 		player.set_arm_weapon(selected_arm, player.inventory_weapons[index])
 		player.inventory_weapons[index] = null
-		# TODO move nulls to the end
+		# move non-nulls up the list
+		while index < 8 and player.inventory_weapons[index + 1] != null:
+			player.inventory_weapons[index] = player.inventory_weapons[index + 1]
+			player.inventory_weapons[index + 1] = null
+			index += 1
+			
 		
 
 	configure(player)
