@@ -204,6 +204,14 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_n6hdu")
 value = 100.0
 show_percentage = false
 
+[node name="ManaText" type="Label" parent="HUD"]
+offset_left = 170.0
+offset_top = 705.0
+offset_right = 325.0
+offset_bottom = 728.0
+text = "50/50"
+horizontal_alignment = 1
+
 [node name="HealthBar" type="ProgressBar" parent="HUD"]
 offset_left = 30.0
 offset_top = 747.0
@@ -213,6 +221,14 @@ theme_override_styles/background = SubResource("StyleBoxFlat_0b4ue")
 theme_override_styles/fill = SubResource("StyleBoxFlat_f2txt")
 value = 100.0
 show_percentage = false
+
+[node name="HealthText" type="Label" parent="HUD"]
+offset_left = 184.0
+offset_top = 748.0
+offset_right = 309.0
+offset_bottom = 771.0
+text = "63/63"
+horizontal_alignment = 1
 
 [node name="LevelNumberLabel" type="Label" parent="HUD"]
 offset_left = 1171.0
@@ -224,6 +240,7 @@ text = "Level 1"
 
 [node name="PauseMenu" type="CanvasLayer" parent="."]
 process_mode = 2
+layer = 3
 visible = false
 
 [node name="ColorRect" type="ColorRect" parent="PauseMenu"]
@@ -264,6 +281,7 @@ text = "Exit to Desktop"
 
 [node name="DeathMenu" type="CanvasLayer" parent="."]
 process_mode = 2
+layer = 3
 visible = false
 
 [node name="ColorRect" type="ColorRect" parent="DeathMenu"]
@@ -316,6 +334,7 @@ shape = SubResource("CircleShape2D_f2txt")
 disabled = true
 
 [node name="InventoryMenu" parent="." instance=ExtResource("6_n6hdu")]
+layer = 3
 visible = false
 
 [connection signal="died" from="Player" to="." method="_on_player_died"]

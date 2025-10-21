@@ -122,6 +122,8 @@ var is_on_exit_portal = false
 
 func _ready() -> void:
 	$HUD/LevelNumberLabel.text = "Level %d" % depth
+	_on_player_health_changed()
+	_on_player_mana_changed()
 
 func _process(_delta: float) -> void:
 	#if Input.is_action_just_pressed("spawn_enemy"):
@@ -154,9 +156,12 @@ func _on_mob_died(location: Vector2) -> void:
 
 func _on_player_health_changed() -> void:
 	$HUD/HealthBar.value = ($Player.current_health as float / $Player.max_health as float) * 100.0
+	$HUD/HealthText.text = str($Player.current_health) + "/" + str($Player.max_health)
 
 func _on_player_mana_changed() -> void:
 	$HUD/ManaBar.value = ($Player.current_mana as float / $Player.max_mana as float) * 100.0
+	$HUD/ManaText.text = str($Player.current_mana) + "/" + str($Player.max_mana)
+
 
 func _on_resume_pressed() -> void:
 	$PauseMenu.hide()
