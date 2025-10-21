@@ -143,7 +143,7 @@ func configure(player: Player) -> void:
 
 func _on_arm_button_pressed(index: int) -> void:
 	selected_arm = index
-	$InventoryContainer/Item0.grab_focus()
+	$InventoryContainer/Empty.grab_focus()
 
 func _on_arm_focus_entered(index: int) -> void:
 	$ArmWeaponDetails.populate(player.arm_weapons[index])
@@ -161,10 +161,23 @@ func _on_item_button_pressed(index: int) -> void:
 			player.inventory_weapons[index] = player.inventory_weapons[index + 1]
 			player.inventory_weapons[index + 1] = null
 			index += 1
-			
-		
 
 	configure(player)
+	$InventoryWeaponDetails.clear()
+	$ArmsContainer/Arm0/Button.grab_focus()
+
+func _on_empty_pressed() -> void:
+	if player.arm_weapons[selected_arm] != null:
+		var unequipped = player.arm_weapons[selected_arm]
+		player.set_arm_weapon(selected_arm, null)
+		for i in range(8):
+			if player.inventory_weapons[i] == null:
+				player.inventory_weapons[i] = unequipped
+				break
+			# TODO what if inventory is full?
+		configure(player)
+	else: # arm is already empty
+		pass
 	$InventoryWeaponDetails.clear()
 	$ArmsContainer/Arm0/Button.grab_focus()
 

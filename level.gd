@@ -142,8 +142,6 @@ func _process(_delta: float) -> void:
 			tree.set_current_scene(next_level)
 	if Input.is_action_just_pressed("inventory"):
 		get_tree().paused = true
-		# TODO instantiate a "InventoryArmMenuItem" scene for each arm and add to right place (different depending on arm empty or not)
-		# TODO instantiate a "InventoryWeaponMenuItem" scene for each inventory weapon and add to right place on menu
 		$InventoryMenu.configure($Player)
 		$InventoryMenu.show()
 		$InventoryMenu/ArmsContainer/Arm0/Button.grab_focus()

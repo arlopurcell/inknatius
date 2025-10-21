@@ -188,9 +188,15 @@ offset_top = 145.0
 offset_right = 802.0
 offset_bottom = 765.0
 
-[node name="Item0" type="Button" parent="InventoryContainer"]
+[node name="Empty" type="Button" parent="InventoryContainer"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../../ContinueButton")
+focus_neighbor_bottom = NodePath("../Item0")
+text = "<Empty>"
+
+[node name="Item0" type="Button" parent="InventoryContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Empty")
 focus_neighbor_bottom = NodePath("../Item1")
 text = "Projectile"
 
@@ -257,4 +263,5 @@ text = "Continue Game"
 
 [connection signal="focus_entered" from="ArmsContainer/Arm1/Button" to="." method="_on_arm1_focus_entered"]
 [connection signal="pressed" from="ArmsContainer/Arm1/Button" to="." method="_on_arm1_button_pressed"]
+[connection signal="pressed" from="InventoryContainer/Empty" to="." method="_on_empty_pressed"]
 [connection signal="pressed" from="ContinueButton" to="." method="_on_continue_button_pressed"]

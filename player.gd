@@ -50,9 +50,12 @@ func _ready() -> void:
 func set_arm_weapon(arm_index: int, weapon: Node) -> void:
 	if arm_weapons[arm_index]:
 		remove_child(arm_weapons[arm_index])
+
 	arm_weapons[arm_index] = weapon
-	weapon.attack_finished.connect(_on_attack_finished)
-	add_child(weapon)
+
+	if weapon:
+		weapon.attack_finished.connect(_on_attack_finished)
+		add_child(weapon)
 
 func set_animation(animation: String):
 	$BodySprite.play(animation)
