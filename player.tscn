@@ -1041,6 +1041,7 @@ horizontal_alignment = 1
 
 [node name="MessageTimer" type="Timer" parent="."]
 wait_time = 2.0
+one_shot = true
 
 [connection signal="health_changed" from="." to="." method="_on_health_changed"]
 [connection signal="animation_finished" from="DeathAnimator" to="." method="_on_death_animation_finished"]

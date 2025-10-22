@@ -15,7 +15,7 @@ func configure(params: Dictionary) -> CircleAoeDotWand:
 	display_name = params.get("display_name", "Circle AEO DOT")
 	power = params.get("power", 10.0)
 	mana_cost = params.get("mana_cost", 0)
-	mana_per_second = params.get("mana_per_second", 2)
+	mana_per_second = params.get("mana_per_second", 4)
 	aoe_radius = params.get("aoe_radius", 50.0)
 	$AnimationPlayer.speed_scale = params.get("speed_scale", 2.0)
 	$Sprite.modulate = params.get("color", Color(0.6, 0.4, 0.7)) # default brown

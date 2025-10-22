@@ -21,7 +21,8 @@ enum TileType { FLOOR, WALL, EDGE }
 
 static func new_level(new_depth: int, old_player: Player) -> Level:
 	var level_scene = load("res://level.tscn")
-	var mob_scene = load("res://mob.tscn")
+	var crab_scene = load("res://mob.tscn")
+	var jelly_scene = load("res://jelly_archer.tscn")
 	var level: Level = level_scene.instantiate()
 	level.depth = new_depth
 	
@@ -80,7 +81,11 @@ static func new_level(new_depth: int, old_player: Player) -> Level:
 		else:
 			# add some enemies to other rooms
 			for j in range(enemies_per_room_min, enemies_per_room_max):
-				var mob: Mob = mob_scene.instantiate()
+				var mob = null
+				if rng.randi() % 2 == 0:
+					mob = jelly_scene.instantiate()
+				else:
+					mob = crab_scene.instantiate()
 				var mob_x = rng.randi_range(room_x, room_x + room_width)
 				var mob_y = rng.randi_range(room_y, room_y + room_height)
 				mob.position = Vector2(mob_x * tile_size as float, mob_y * tile_size as float)

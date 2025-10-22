@@ -469,8 +469,6 @@ shape = SubResource("RectangleShape2D_dy6sc")
 [node name="BodySprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(23, -14)
 sprite_frames = SubResource("SpriteFrames_1qmh0")
-animation = &"attack_right"
-frame = 7
 flip_h = true
 
 [node name="HealthBar" type="ProgressBar" parent="."]
