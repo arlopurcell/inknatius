@@ -6,12 +6,14 @@ var mana_cost = 0
 var mana_per_second = 4
 var aoe_radius = 50.0
 var display_name = "Circle AOE DOT"
+var materials = {}
 
 var is_on = false
 var enemies_in_aoe = {}
 signal attack_finished
 
-func configure(params: Dictionary) -> CircleAoeDotWand:
+func configure(materials: Dictionary, params: Dictionary) -> CircleAoeDotWand:
+	self.materials = materials
 	display_name = params.get("display_name", "Circle AEO DOT")
 	power = params.get("power", 10.0)
 	mana_cost = params.get("mana_cost", 0)

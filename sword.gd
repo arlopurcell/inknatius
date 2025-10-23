@@ -4,12 +4,14 @@ extends Area2D
 var power = 20.0
 var mana_cost = 0
 var display_name = "Sword"
+var materials = {}
 
 # not a toggle wand
 const is_on = false
 signal attack_finished
 
-func configure(params: Dictionary) -> Sword:
+func configure(materials: Dictionary, params: Dictionary) -> Sword:
+	self.materials = materials
 	display_name = params.get("display_name", "Sword")
 	power = params.get("power", 20.0)
 	mana_cost = params.get("mana_cost", 0)

@@ -8,6 +8,7 @@ var projectile_speed = 400
 var diameter = 40.0
 var explosion_diameter = 100.0
 var display_name = "Explosive Projectile"
+var materials = {}
 
 # not a toggle wand
 const is_on = false
@@ -16,7 +17,8 @@ var face_direction = null
 
 signal attack_finished
 
-func configure(params: Dictionary) -> ExplosiveProjectileWand:
+func configure(materials: Dictionary, params: Dictionary) -> ExplosiveProjectileWand:
+	self.materials = materials
 	display_name = params.get("display_name", "Explosive Projectile")
 	power = params.get("power", 50.0)
 	mana_cost = params.get("mana_cost", 40)

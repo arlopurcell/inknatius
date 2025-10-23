@@ -7,6 +7,7 @@ var spell_range = 400.0
 var projectile_speed = 400.0
 var diameter = 60.0
 var display_name = "Projectile"
+var materials = {}
 
 # not a toggle wand
 const is_on = false
@@ -15,7 +16,8 @@ var face_direction = null
 
 signal attack_finished
 
-func configure(params: Dictionary) -> Wand:
+func configure(materials: Dictionary, params: Dictionary) -> Wand:
+	self.materials = materials
 	display_name = params.get("display_name", "Projectile")
 	power = params.get("power", 50.0)
 	mana_cost = params.get("mana_cost", 20)

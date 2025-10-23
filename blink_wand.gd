@@ -4,6 +4,7 @@ extends Node2D
 var spell_range = 100.0
 var mana_cost = 10
 var display_name = "Blink"
+var materials = {}
 
 var face_direction = null
 
@@ -12,7 +13,8 @@ const is_on = false
 
 signal attack_finished
 
-func configure(params: Dictionary) -> BlinkWand:
+func configure(materials: Dictionary, params: Dictionary) -> BlinkWand:
+	self.materials = materials
 	display_name = params.get("display_name", "Blink")
 	mana_cost = params.get("mana_cost", 10)
 	spell_range = params.get("spell_range", 100.0)

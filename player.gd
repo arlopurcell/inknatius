@@ -36,16 +36,14 @@ func _ready() -> void:
 	$BeltSprite.play()
 	
 	# temp add weapons
-	set_arm_weapon(0, load("res://blink_wand.tscn").instantiate().configure({}))
-	set_arm_weapon(1, load("res://explosive_projectile_wand.tscn").instantiate().configure({}))
-	set_arm_weapon(2, load("res://sword.tscn").instantiate().configure({}))
-	set_arm_weapon(3, load("res://circle_aoe_dot_wand.tscn").instantiate().configure({"aoe_radius": 100.0}))
+	var forge = Forge.new()
+	set_arm_weapon(0, forge.create_blink_weapon("Blink", {"a":1}))
+	set_arm_weapon(1, forge.create_explosive_projectile_weapon("Explosive Projectile", {"a":1, "d":4}))
+	set_arm_weapon(2, forge.create_melee_weapon("Sword", {"a":1}))
+	set_arm_weapon(3, forge.create_aoe_dot_weapon("Circle AOE DOT", {"a":1, "b":4}))
 	
-	inventory_weapons[0] = load("res://wand.tscn").instantiate().configure({})
-	inventory_weapons[1] = load("res://explosive_projectile_wand.tscn").instantiate().configure({
-		"display_name": "Explosive Trap",
-		"projectile_speed": 1.0
-	})
+	inventory_weapons[0] = forge.create_projectile_weapon("Projectile", {"a":1})
+	inventory_weapons[1] = forge.create_explosive_projectile_weapon("Explosive Trap", {"a":2})
 
 func set_arm_weapon(arm_index: int, weapon: Node) -> void:
 	if arm_weapons[arm_index]:
