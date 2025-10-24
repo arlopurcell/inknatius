@@ -8,6 +8,7 @@ var projectile_speed = 400.0
 var diameter = 60.0
 var display_name = "Projectile"
 var materials = {}
+var type = Forge.WeaponType.Projectile
 
 # not a toggle wand
 const is_on = false

@@ -195,7 +195,16 @@ func _on_arm_button_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().paused = false
 		self.hide()
+	if event.is_action_pressed("PageRight"):
+		_on_forge_button_pressed()
 
 func _on_continue_button_pressed() -> void:
 	get_tree().paused = false
 	self.hide()
+
+
+func _on_forge_button_pressed() -> void:
+	self.hide()
+	var forge_menu = get_parent().get_node("ForgeMenu")
+	forge_menu.configure(player)
+	forge_menu.show()

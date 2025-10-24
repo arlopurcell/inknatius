@@ -5,6 +5,7 @@ var power = 20.0
 var mana_cost = 0
 var display_name = "Sword"
 var materials = {}
+var type = Forge.WeaponType.Melee
 
 # not a toggle wand
 const is_on = false

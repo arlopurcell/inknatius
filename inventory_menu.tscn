@@ -261,7 +261,15 @@ offset_bottom = 74.0
 focus_neighbor_bottom = NodePath("../ArmsContainer/Arm0/Button")
 text = "Continue Game"
 
+[node name="Button" type="Button" parent="."]
+offset_left = 1021.0
+offset_top = 38.0
+offset_right = 1091.0
+offset_bottom = 69.0
+text = "Forge ->"
+
 [connection signal="focus_entered" from="ArmsContainer/Arm1/Button" to="." method="_on_arm1_focus_entered"]
 [connection signal="pressed" from="ArmsContainer/Arm1/Button" to="." method="_on_arm1_button_pressed"]
 [connection signal="pressed" from="InventoryContainer/Empty" to="." method="_on_empty_pressed"]
 [connection signal="pressed" from="ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_forge_button_pressed"]

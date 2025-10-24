@@ -7,6 +7,7 @@ var mana_per_second = 4
 var aoe_radius = 50.0
 var display_name = "Circle AOE DOT"
 var materials = {}
+var type = Forge.WeaponType.AoeDot
 
 var is_on = false
 var enemies_in_aoe = {}

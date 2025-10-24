@@ -21,6 +21,13 @@ signal died
 
 var arm_weapons = [null, null, null, null, null, null, null, null] # 8 arms
 var inventory_weapons = [null, null, null, null, null, null, null, null] # 8 inventory slots
+var materials = {
+	# TODO start empty
+	"a": 3,
+	"b": 7,
+	"c": 4,
+	"d": 1,
+}
 
 const dead_zone_threshold = 0.2
 

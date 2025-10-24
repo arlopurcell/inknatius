@@ -40,7 +40,7 @@ var explosive_projectile_scene = preload("res://explosive_projectile_wand.tscn")
 var blink_scene = preload("res://blink_wand.tscn")
 var aoe_dot_scene = preload("res://circle_aoe_dot_wand.tscn")
 
-func create_weapon(name: String, weapon_type: WeaponType, materials: Dictionary) -> Node:
+func create_weapon(weapon_type: WeaponType, materials: Dictionary, name: String = "") -> Node:
 	if weapon_type == WeaponType.Melee:
 		return create_melee_weapon(name, materials)
 	if weapon_type == WeaponType.Projectile:

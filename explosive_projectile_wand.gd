@@ -9,6 +9,7 @@ var diameter = 40.0
 var explosion_diameter = 100.0
 var display_name = "Explosive Projectile"
 var materials = {}
+var type = Forge.WeaponType.ExplosiveProjectile
 
 # not a toggle wand
 const is_on = false
