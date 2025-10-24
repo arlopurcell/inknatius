@@ -88,7 +88,7 @@ func attack(target: Vector2) -> void:
 
 func _on_attack_timer_timeout() -> void:
 	var direction = global_position.direction_to(attack_target).normalized()
-	var arrow = Arrow.fire(global_position + direction * speed / 2, direction * speed, arrow_range, power)
+	var arrow = Arrow.fire(global_position + direction * speed / 4, direction * speed, arrow_range, power)
 	get_parent().add_child(arrow)
 
 func _on_full_attack_timer_timeout() -> void:
