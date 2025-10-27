@@ -4,7 +4,9 @@ func _ready() -> void:
 	$HBoxContainer/VBoxContainer/NewGameButton.grab_focus()
 
 func _on_new_game_button_pressed() -> void:
-	var new_level = Level.new_level(1, null)
+	var forge = Forge.new()
+	forge.new_game()
+	var new_level = Level.new_level(forge)
 
 	var tree = get_tree()
 	var cur_scene = tree.get_current_scene()

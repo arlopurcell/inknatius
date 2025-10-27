@@ -1,21 +1,23 @@
 extends CanvasLayer
 
 var player: Player = null
+var forge: Forge = null
 
-var new_weapon_type = Forge.WeaponType.Melee
+var new_weapon_type = null
 var selected_weapon_from_arms = false
 var selected_weapon_index: int = -1
 
 var current_materials = {}
 var available_materials = {}
 
-func _ready() -> void:
-	pass
-	
 
-func configure(player: Player) -> void:
+func configure(player: Player, forge: Forge) -> void:
 	self.player = player
+	self.forge = forge
+	reconfigure()
 	
+func reconfigure() -> void:
+	reset_material_labels()
 	# remove all children
 	for child in $WeaponsContainer/VBoxContainer.get_children():
 		$WeaponsContainer/VBoxContainer.remove_child(child)
@@ -109,6 +111,32 @@ func update_available_labels() -> void:
 	$InventoryContainer/MaterialD/Available.text = str(available_materials.get("d", 0))
 	$InventoryContainer/MaterialE/Available.text = str(available_materials.get("e", 0))
 	$InventoryContainer/MaterialF/Available.text = str(available_materials.get("f", 0))
+	
+func update_material_labels(weapon_type: Forge.WeaponType) -> void:
+	var mapping = forge.mapping_for_type(weapon_type)
+	for stat in mapping:
+		var stat_display_name = forge.stat_display_names[stat]
+		var material = mapping[stat]
+		if material == "a":
+			$InventoryContainer/MaterialA/Label.text = "A (%s)" % stat_display_name
+		elif material == "b":
+			$InventoryContainer/MaterialB/Label.text = "B (%s)" % stat_display_name
+		elif material == "c":
+			$InventoryContainer/MaterialC/Label.text = "C (%s)" % stat_display_name
+		elif material == "d":
+			$InventoryContainer/MaterialD/Label.text = "D (%s)" % stat_display_name
+		elif material == "e":
+			$InventoryContainer/MaterialE/Label.text = "E (%s)" % stat_display_name
+		elif material == "f":
+			$InventoryContainer/MaterialF/Label.text = "F (%s)" % stat_display_name
+			
+func reset_material_labels() -> void:
+	$InventoryContainer/MaterialA/Label.text = "Material A"
+	$InventoryContainer/MaterialB/Label.text = "Material B"
+	$InventoryContainer/MaterialC/Label.text = "Material C"
+	$InventoryContainer/MaterialD/Label.text = "Material D"
+	$InventoryContainer/MaterialE/Label.text = "Material E"
+	$InventoryContainer/MaterialF/Label.text = "Material F"
 
 func _on_weapon_button_pressed(is_arm: bool, index: int) -> void:
 	selected_weapon_from_arms = is_arm
@@ -117,6 +145,7 @@ func _on_weapon_button_pressed(is_arm: bool, index: int) -> void:
 	var weapon = player.arm_weapons[selected_weapon_index] if is_arm else player.inventory_weapons[selected_weapon_index]
 	current_materials = weapon.materials.duplicate()
 	update_current_labels()
+	update_material_labels(weapon.type)
 	$InventoryContainer/MaterialA/More.grab_focus()
 
 func _on_weapon_focus_entered(is_arm: bool, index: int) -> void:
@@ -133,11 +162,11 @@ func _on_weapon_button_gui_input(event: InputEvent) -> void:
 	
 func _on_forge_new_pressed(type: Forge.WeaponType) -> void:
 	new_weapon_type = type
+	update_material_labels(new_weapon_type)
 	$InventoryContainer/MaterialA/More.grab_focus()
 	
 func _on_forge_new_focus_entered() -> void:
 	$OldWeaponDetails.populate(null)
-
 
 func _on_inventory_button_pressed() -> void:
 	self.hide()
@@ -147,8 +176,6 @@ func _on_inventory_button_pressed() -> void:
 		
 			
 func refresh_new_weapon() -> void:
-	var forge = Forge.new() # TODO get this from somewhere
-
 	# update details in $NewWeaponDetails
 	if new_weapon_type != null:
 		$NewWeaponDetails.populate(forge.create_weapon(new_weapon_type, current_materials))
@@ -188,13 +215,13 @@ func _on_material_gui_input(event: InputEvent) -> void:
 		selected_weapon_index = -1
 		new_weapon_type = null
 		reset_materials()
+		reset_material_labels()
 		update_available_labels()
 		update_current_labels()
 		$WeaponsContainer/VBoxContainer.get_child(0).grab_focus()
 
 # TODO don't allow forging with no materials
 func _on_forge_button_pressed() -> void:
-	var forge = Forge.new() # TODO get this from somewhere
 	if new_weapon_type != null:
 		var weapon = forge.create_weapon(new_weapon_type, current_materials)
 		for i in range(8):
@@ -211,7 +238,7 @@ func _on_forge_button_pressed() -> void:
 		else:
 			player.inventory_weapons[selected_weapon_index] = weapon
 	player.materials = available_materials
-	configure(player)
+	reconfigure()
 
 
 func _on_destroy_button_pressed() -> void:
@@ -229,4 +256,4 @@ func _on_destroy_button_pressed() -> void:
 				player.inventory_weapons[index + 1] = null
 				index += 1
 
-	configure(player)
+	reconfigure()

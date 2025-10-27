@@ -19,12 +19,13 @@ const tile_size = 32
 
 enum TileType { FLOOR, WALL, EDGE }
 
-static func new_level(new_depth: int, old_player: Player) -> Level:
+static func new_level(forge: Forge, new_depth: int = 1, old_player: Player = null) -> Level:
 	var level_scene = load("res://level.tscn")
 	var crab_scene = load("res://mob.tscn")
 	var jelly_scene = load("res://jelly_archer.tscn")
 	var level: Level = level_scene.instantiate()
 	level.depth = new_depth
+	level.forge = forge
 	
 	var tile_arr = [];
 	# first make everything a wall
@@ -124,11 +125,15 @@ static func new_level(new_depth: int, old_player: Player) -> Level:
 var depth = 1
 var enemy_count = 0
 var is_on_exit_portal = false
+var forge = null
 
 func _ready() -> void:
 	$HUD/LevelNumberLabel.text = "Level %d" % depth
 	_on_player_health_changed()
 	_on_player_mana_changed()
+	$InventoryMenu.configure($Player)
+	$ForgeMenu.configure($Player, forge)
+
 
 func _process(_delta: float) -> void:
 	#if Input.is_action_just_pressed("spawn_enemy"):
@@ -140,7 +145,7 @@ func _process(_delta: float) -> void:
 		$PauseMenu/CenterContainer/VBoxContainer/Resume.grab_focus()
 	if Input.is_action_just_pressed("interact"):
 		if is_on_exit_portal:
-			var next_level = Level.new_level(depth + 1, $Player)
+			var next_level = Level.new_level(forge, depth + 1, $Player)
 
 			var tree = get_tree()
 			var cur_scene = tree.get_current_scene()
@@ -149,7 +154,6 @@ func _process(_delta: float) -> void:
 			tree.set_current_scene(next_level)
 	if Input.is_action_just_pressed("inventory"):
 		get_tree().paused = true
-		$InventoryMenu.configure($Player)
 		$InventoryMenu.show()
 		$InventoryMenu/ArmsContainer/Arm0/Button.grab_focus()
 

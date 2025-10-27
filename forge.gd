@@ -9,7 +9,15 @@ enum WeaponType {
 	AoeDot,
 }
 
-# TODO randomize these
+const stat_display_names = {
+	"power": "Power",
+	"spell_range": "Range",
+	"diameter": "Diameter",
+	"projectile_speed": "Projectile Speed",
+	"explosion_diameter": "Explosion Diamter",
+	"aoe_radius": "AOE Radius",
+}
+
 var melee_material_mapping = {
 	"power": "a",
 }
@@ -39,6 +47,57 @@ var projectile_scene = preload("res://wand.tscn")
 var explosive_projectile_scene = preload("res://explosive_projectile_wand.tscn")
 var blink_scene = preload("res://blink_wand.tscn")
 var aoe_dot_scene = preload("res://circle_aoe_dot_wand.tscn")
+
+func new_game() -> void:
+	var materials = null
+	
+	melee_material_mapping = {}
+	materials = shuffled_materials()
+	melee_material_mapping["power"] = materials.pop_back()
+	
+	projectile_material_mapping = {}
+	materials = shuffled_materials()
+	projectile_material_mapping["power"] = materials.pop_back()
+	projectile_material_mapping["spell_range"] = materials.pop_back()
+	projectile_material_mapping["diameter"] = materials.pop_back()
+	projectile_material_mapping["projectile_speed"] = materials.pop_back()
+	
+	explosive_projectile_material_mapping = {}
+	materials = shuffled_materials()
+	explosive_projectile_material_mapping["power"] = materials.pop_back()
+	explosive_projectile_material_mapping["spell_range"] = materials.pop_back()
+	explosive_projectile_material_mapping["diameter"] = materials.pop_back()
+	explosive_projectile_material_mapping["projectile_speed"] = materials.pop_back()
+	explosive_projectile_material_mapping["explosion_diameter"] = materials.pop_back()
+	
+	blink_material_mapping = {}
+	materials = shuffled_materials()
+	blink_material_mapping["spell_range"] = materials.pop_back()
+	
+	aoe_dot_material_mapping = {}
+	materials = shuffled_materials()
+	aoe_dot_material_mapping["power"] = materials.pop_back()
+	aoe_dot_material_mapping["aoe_radius"] = materials.pop_back()
+
+func shuffled_materials() -> Array[String]:
+	var materials: Array[String] = ["a", "b", "c", "d", "e", "f"]
+	materials.shuffle()
+	return materials
+
+func mapping_for_type(weapon_type: WeaponType) -> Dictionary:
+	if weapon_type == WeaponType.Melee:
+		return melee_material_mapping
+	elif weapon_type == WeaponType.Projectile:
+		return projectile_material_mapping
+	elif weapon_type == WeaponType.ExplosiveProjectile:
+		return explosive_projectile_material_mapping
+	elif weapon_type == WeaponType.Blink:
+		return blink_material_mapping
+	elif weapon_type == WeaponType.AoeDot:
+		return aoe_dot_material_mapping
+	else:
+		# this should be unreachable
+		return {}
 
 func create_weapon(weapon_type: WeaponType, materials: Dictionary, name: String = "") -> Node:
 	if weapon_type == WeaponType.Melee:

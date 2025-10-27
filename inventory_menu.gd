@@ -206,5 +206,5 @@ func _on_continue_button_pressed() -> void:
 func _on_forge_button_pressed() -> void:
 	self.hide()
 	var forge_menu = get_parent().get_node("ForgeMenu")
-	forge_menu.configure(player)
+	forge_menu.reconfigure()
 	forge_menu.show()
