@@ -192,7 +192,6 @@ func _on_material_gui_input(event: InputEvent) -> void:
 		update_current_labels()
 		$WeaponsContainer/VBoxContainer.get_child(0).grab_focus()
 
-# TODO add destroy button
 # TODO don't allow forging with no materials
 func _on_forge_button_pressed() -> void:
 	var forge = Forge.new() # TODO get this from somewhere
@@ -212,4 +211,22 @@ func _on_forge_button_pressed() -> void:
 		else:
 			player.inventory_weapons[selected_weapon_index] = weapon
 	player.materials = available_materials
+	configure(player)
+
+
+func _on_destroy_button_pressed() -> void:
+	for material in current_materials:
+		player.materials[material] = player.materials.get(material, 0) + current_materials[material]
+	if new_weapon_type == null:
+		if selected_weapon_from_arms:
+			player.arm_weapons[selected_weapon_index] = null
+		else:
+			player.inventory_weapons[selected_weapon_index] = null
+			var index = selected_weapon_index
+			# move non-nulls up the list
+			while index < 7 and player.inventory_weapons[index + 1] != null:
+				player.inventory_weapons[index] = player.inventory_weapons[index + 1]
+				player.inventory_weapons[index + 1] = null
+				index += 1
+
 	configure(player)

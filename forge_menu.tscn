@@ -303,8 +303,17 @@ offset_top = 689.0
 offset_right = 633.0
 offset_bottom = 720.0
 focus_neighbor_top = NodePath("../InventoryContainer/MaterialF/More")
+focus_neighbor_bottom = NodePath("../DestroyButton")
 text = "Forge
 "
+
+[node name="DestroyButton" type="Button" parent="."]
+offset_left = 574.0
+offset_top = 723.0
+offset_right = 643.0
+offset_bottom = 754.0
+focus_neighbor_top = NodePath("../ForgeButton")
+text = "Destroy"
 
 [connection signal="gui_input" from="InventoryContainer/MaterialA/Less" to="." method="_on_material_gui_input"]
 [connection signal="pressed" from="InventoryContainer/MaterialA/Less" to="." method="_on_less_pressed" binds= ["a"]]
@@ -332,3 +341,4 @@ text = "Forge
 [connection signal="pressed" from="InventoryContainer/MaterialF/More" to="." method="_on_more_pressed" binds= ["f"]]
 [connection signal="pressed" from="InventoryButton" to="." method="_on_inventory_button_pressed"]
 [connection signal="pressed" from="ForgeButton" to="." method="_on_forge_button_pressed"]
+[connection signal="pressed" from="DestroyButton" to="." method="_on_destroy_button_pressed"]
