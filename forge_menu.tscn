@@ -11,6 +11,7 @@ font_size = 24
 
 [node name="ForgeMenu" type="CanvasLayer"]
 process_mode = 2
+layer = 5
 script = ExtResource("1_wmsqf")
 
 [node name="background" type="ColorRect" parent="."]
@@ -79,18 +80,20 @@ offset_bottom = 794.0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="InventoryContainer" type="VBoxContainer" parent="."]
+[node name="InventoryContainer" type="GridContainer" parent="."]
 offset_left = 403.0
 offset_top = 201.0
 offset_right = 802.0
 offset_bottom = 765.0
+theme_override_constants/h_separation = 60
+columns = 3
+
+[node name="LabelA" type="Label" parent="InventoryContainer"]
+layout_mode = 2
+text = "Material A"
 
 [node name="MaterialA" type="HBoxContainer" parent="InventoryContainer"]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="InventoryContainer/MaterialA"]
-layout_mode = 2
-text = "Material A"
 
 [node name="Less" type="Button" parent="InventoryContainer/MaterialA"]
 layout_mode = 2
@@ -108,20 +111,16 @@ focus_neighbor_left = NodePath("../Less")
 focus_neighbor_bottom = NodePath("../../MaterialB/More")
 text = "+"
 
-[node name="Spacer" type="Control" parent="InventoryContainer/MaterialA"]
-custom_minimum_size = Vector2(100, 0)
+[node name="AvailableA" type="Label" parent="InventoryContainer"]
 layout_mode = 2
+text = "0"
 
-[node name="Available" type="Label" parent="InventoryContainer/MaterialA"]
+[node name="LabelB" type="Label" parent="InventoryContainer"]
 layout_mode = 2
-text = "15"
+text = "Material A"
 
 [node name="MaterialB" type="HBoxContainer" parent="InventoryContainer"]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="InventoryContainer/MaterialB"]
-layout_mode = 2
-text = "Material B"
 
 [node name="Less" type="Button" parent="InventoryContainer/MaterialB"]
 layout_mode = 2
@@ -141,20 +140,16 @@ focus_neighbor_top = NodePath("../../MaterialA/More")
 focus_neighbor_bottom = NodePath("../../MaterialC/More")
 text = "+"
 
-[node name="Spacer" type="Control" parent="InventoryContainer/MaterialB"]
-custom_minimum_size = Vector2(100, 0)
+[node name="AvailableB" type="Label" parent="InventoryContainer"]
 layout_mode = 2
+text = "0"
 
-[node name="Available" type="Label" parent="InventoryContainer/MaterialB"]
+[node name="LabelC" type="Label" parent="InventoryContainer"]
 layout_mode = 2
-text = "15"
+text = "Material A"
 
 [node name="MaterialC" type="HBoxContainer" parent="InventoryContainer"]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="InventoryContainer/MaterialC"]
-layout_mode = 2
-text = "Material C"
 
 [node name="Less" type="Button" parent="InventoryContainer/MaterialC"]
 layout_mode = 2
@@ -174,20 +169,16 @@ focus_neighbor_top = NodePath("../../MaterialB/More")
 focus_neighbor_bottom = NodePath("../../MaterialD/More")
 text = "+"
 
-[node name="Spacer" type="Control" parent="InventoryContainer/MaterialC"]
-custom_minimum_size = Vector2(100, 0)
+[node name="AvailableC" type="Label" parent="InventoryContainer"]
 layout_mode = 2
+text = "0"
 
-[node name="Available" type="Label" parent="InventoryContainer/MaterialC"]
+[node name="LabelD" type="Label" parent="InventoryContainer"]
 layout_mode = 2
-text = "15"
+text = "Material A"
 
 [node name="MaterialD" type="HBoxContainer" parent="InventoryContainer"]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="InventoryContainer/MaterialD"]
-layout_mode = 2
-text = "Material D"
 
 [node name="Less" type="Button" parent="InventoryContainer/MaterialD"]
 layout_mode = 2
@@ -207,20 +198,16 @@ focus_neighbor_top = NodePath("../../MaterialC/More")
 focus_neighbor_bottom = NodePath("../../MaterialE/More")
 text = "+"
 
-[node name="Spacer" type="Control" parent="InventoryContainer/MaterialD"]
-custom_minimum_size = Vector2(100, 0)
+[node name="AvailableD" type="Label" parent="InventoryContainer"]
 layout_mode = 2
+text = "0"
 
-[node name="Available" type="Label" parent="InventoryContainer/MaterialD"]
+[node name="LabelE" type="Label" parent="InventoryContainer"]
 layout_mode = 2
-text = "15"
+text = "Material A"
 
 [node name="MaterialE" type="HBoxContainer" parent="InventoryContainer"]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="InventoryContainer/MaterialE"]
-layout_mode = 2
-text = "Material E"
 
 [node name="Less" type="Button" parent="InventoryContainer/MaterialE"]
 layout_mode = 2
@@ -240,20 +227,16 @@ focus_neighbor_top = NodePath("../../MaterialD/More")
 focus_neighbor_bottom = NodePath("../../MaterialF/More")
 text = "+"
 
-[node name="Spacer" type="Control" parent="InventoryContainer/MaterialE"]
-custom_minimum_size = Vector2(100, 0)
+[node name="AvailableE" type="Label" parent="InventoryContainer"]
 layout_mode = 2
+text = "0"
 
-[node name="Available" type="Label" parent="InventoryContainer/MaterialE"]
+[node name="LabelF" type="Label" parent="InventoryContainer"]
 layout_mode = 2
-text = "15"
+text = "Material A"
 
 [node name="MaterialF" type="HBoxContainer" parent="InventoryContainer"]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="InventoryContainer/MaterialF"]
-layout_mode = 2
-text = "Material F"
 
 [node name="Less" type="Button" parent="InventoryContainer/MaterialF"]
 layout_mode = 2
@@ -273,13 +256,9 @@ focus_neighbor_top = NodePath("../../MaterialE/More")
 focus_neighbor_bottom = NodePath("../../../ForgeButton")
 text = "+"
 
-[node name="Spacer" type="Control" parent="InventoryContainer/MaterialF"]
-custom_minimum_size = Vector2(100, 0)
+[node name="AvailableF" type="Label" parent="InventoryContainer"]
 layout_mode = 2
-
-[node name="Available" type="Label" parent="InventoryContainer/MaterialF"]
-layout_mode = 2
-text = "15"
+text = "0"
 
 [node name="OldWeaponDetails" parent="." instance=ExtResource("2_ytdjv")]
 offset_left = 849.0

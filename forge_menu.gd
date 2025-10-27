@@ -105,12 +105,12 @@ func update_current_labels() -> void:
 	$InventoryContainer/MaterialF/Current.text = str(current_materials.get("f", 0))
 
 func update_available_labels() -> void:
-	$InventoryContainer/MaterialA/Available.text = str(available_materials.get("a", 0))
-	$InventoryContainer/MaterialB/Available.text = str(available_materials.get("b", 0))
-	$InventoryContainer/MaterialC/Available.text = str(available_materials.get("c", 0))
-	$InventoryContainer/MaterialD/Available.text = str(available_materials.get("d", 0))
-	$InventoryContainer/MaterialE/Available.text = str(available_materials.get("e", 0))
-	$InventoryContainer/MaterialF/Available.text = str(available_materials.get("f", 0))
+	$InventoryContainer/AvailableA.text = str(available_materials.get("a", 0))
+	$InventoryContainer/AvailableB.text = str(available_materials.get("b", 0))
+	$InventoryContainer/AvailableC.text = str(available_materials.get("c", 0))
+	$InventoryContainer/AvailableD.text = str(available_materials.get("d", 0))
+	$InventoryContainer/AvailableE.text = str(available_materials.get("e", 0))
+	$InventoryContainer/AvailableF.text = str(available_materials.get("f", 0))
 	
 func update_material_labels(weapon_type: Forge.WeaponType) -> void:
 	var mapping = forge.mapping_for_type(weapon_type)
@@ -118,25 +118,25 @@ func update_material_labels(weapon_type: Forge.WeaponType) -> void:
 		var stat_display_name = forge.stat_display_names[stat]
 		var material = mapping[stat]
 		if material == "a":
-			$InventoryContainer/MaterialA/Label.text = "A (%s)" % stat_display_name
+			$InventoryContainer/LabelA.text = "A (%s)" % stat_display_name
 		elif material == "b":
-			$InventoryContainer/MaterialB/Label.text = "B (%s)" % stat_display_name
+			$InventoryContainer/LabelB.text = "B (%s)" % stat_display_name
 		elif material == "c":
-			$InventoryContainer/MaterialC/Label.text = "C (%s)" % stat_display_name
+			$InventoryContainer/LabelC.text = "C (%s)" % stat_display_name
 		elif material == "d":
-			$InventoryContainer/MaterialD/Label.text = "D (%s)" % stat_display_name
+			$InventoryContainer/LabelD.text = "D (%s)" % stat_display_name
 		elif material == "e":
-			$InventoryContainer/MaterialE/Label.text = "E (%s)" % stat_display_name
+			$InventoryContainer/LabelE.text = "E (%s)" % stat_display_name
 		elif material == "f":
-			$InventoryContainer/MaterialF/Label.text = "F (%s)" % stat_display_name
+			$InventoryContainer/LabelF.text = "F (%s)" % stat_display_name
 			
 func reset_material_labels() -> void:
-	$InventoryContainer/MaterialA/Label.text = "Material A"
-	$InventoryContainer/MaterialB/Label.text = "Material B"
-	$InventoryContainer/MaterialC/Label.text = "Material C"
-	$InventoryContainer/MaterialD/Label.text = "Material D"
-	$InventoryContainer/MaterialE/Label.text = "Material E"
-	$InventoryContainer/MaterialF/Label.text = "Material F"
+	$InventoryContainer/LabelA.text = "Material A"
+	$InventoryContainer/LabelB.text = "Material B"
+	$InventoryContainer/LabelC.text = "Material C"
+	$InventoryContainer/LabelD.text = "Material D"
+	$InventoryContainer/LabelE.text = "Material E"
+	$InventoryContainer/LabelF.text = "Material F"
 
 func _on_weapon_button_pressed(is_arm: bool, index: int) -> void:
 	selected_weapon_from_arms = is_arm
