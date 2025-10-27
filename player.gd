@@ -23,10 +23,10 @@ var arm_weapons = [null, null, null, null, null, null, null, null] # 8 arms
 var inventory_weapons = [null, null, null, null, null, null, null, null] # 8 inventory slots
 var materials = {
 	# TODO start empty
-	"a": 3,
-	"b": 7,
-	"c": 4,
-	"d": 1,
+	#"a": 3,
+	#"b": 7,
+	#"c": 4,
+	#"d": 1,
 }
 
 const dead_zone_threshold = 0.2
@@ -42,15 +42,33 @@ func _ready() -> void:
 	$HatSprite.play()
 	$BeltSprite.play()
 	
-	# temp add weapons
-	var forge = Forge.new()
-	set_arm_weapon(0, forge.create_blink_weapon("Blink", {"a":1}))
-	set_arm_weapon(1, forge.create_explosive_projectile_weapon("Explosive Projectile", {"a":1, "d":4}))
-	set_arm_weapon(2, forge.create_melee_weapon("Sword", {"a":1}))
-	set_arm_weapon(3, forge.create_aoe_dot_weapon("Circle AOE DOT", {"a":1, "b":4}))
+	for i in range(8):
+		set_arm_weapon(i, arm_weapons[i])
 	
-	inventory_weapons[0] = forge.create_projectile_weapon("Projectile", {"a":1})
-	inventory_weapons[1] = forge.create_explosive_projectile_weapon("Explosive Trap", {"a":2})
+	if arm_weapons[2] == null:
+		# temp add weapons
+		#var forge = Forge.new()
+		var forge = get_parent().forge
+		#set_arm_weapon(0, forge.create_blink_weapon("Blink", {"a":1}))
+		#set_arm_weapon(1, forge.create_explosive_projectile_weapon("Explosive Projectile", {"a":1, "d":4}))
+		
+		set_arm_weapon(2, forge.create_melee_weapon("Sword", {forge.melee_material_mapping["power"]: 1}))
+		#set_arm_weapon(3, forge.create_aoe_dot_weapon("Circle AOE DOT", {"a":1, "b":4}))
+		
+		#inventory_weapons[0] = forge.create_projectile_weapon("Projectile", {"a":1})
+		#inventory_weapons[1] = forge.create_explosive_projectile_weapon("Explosive Trap", {"a":2})
+
+func transfer_from_level(other: Player) -> void:
+	self.current_health = other.current_health
+	self.health_changed.emit()
+	# TODO make weapons from previous level work
+	#self.arm_weapons = other.arm_weapons
+	var forge = get_parent().forge
+	for i in range(8):
+		set_arm_weapon(i, forge.copy_weapon(other.arm_weapons[i]))
+	
+	self.inventory_weapons = other.inventory_weapons
+	self.materials = other.materials
 
 func set_arm_weapon(arm_index: int, weapon: Node) -> void:
 	if arm_weapons[arm_index]:

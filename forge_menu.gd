@@ -246,6 +246,7 @@ func _on_destroy_button_pressed() -> void:
 		player.materials[material] = player.materials.get(material, 0) + current_materials[material]
 	if new_weapon_type == null:
 		if selected_weapon_from_arms:
+			player.remove_child(player.arm_weapons[selected_weapon_index])
 			player.arm_weapons[selected_weapon_index] = null
 		else:
 			player.inventory_weapons[selected_weapon_index] = null

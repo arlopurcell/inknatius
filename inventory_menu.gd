@@ -73,7 +73,9 @@ func _ready() -> void:
 
 func configure(player: Player) -> void:
 	self.player = player
-	
+	reconfigure()
+
+func reconfigure() -> void:
 	$ArmsContainer/Arm0/Button.text = player.arm_weapons[0].display_name if player.arm_weapons[0] else "<Empty>"
 	$ArmsContainer/Arm1/Button.text = player.arm_weapons[1].display_name if player.arm_weapons[1] else "<Empty>"
 	$ArmsContainer/Arm2/Button.text = player.arm_weapons[2].display_name if player.arm_weapons[2] else "<Empty>"
@@ -138,7 +140,8 @@ func configure(player: Player) -> void:
 	else:
 		$InventoryContainer/Item7.hide()
 		$InventoryContainer/Item7.text = "Empty"
-	
+		
+	$ArmsContainer/Arm0/Button.grab_focus()
 
 
 func _on_arm_button_pressed(index: int) -> void:
@@ -162,7 +165,7 @@ func _on_item_button_pressed(index: int) -> void:
 			player.inventory_weapons[index + 1] = null
 			index += 1
 
-	configure(player)
+	reconfigure()
 	$InventoryWeaponDetails.clear()
 	$ArmsContainer/Arm0/Button.grab_focus()
 
@@ -175,7 +178,7 @@ func _on_empty_pressed() -> void:
 				player.inventory_weapons[i] = unequipped
 				break
 			# TODO what if inventory is full?
-		configure(player)
+		reconfigure()
 	else: # arm is already empty
 		pass
 	$InventoryWeaponDetails.clear()

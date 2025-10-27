@@ -98,6 +98,9 @@ func mapping_for_type(weapon_type: WeaponType) -> Dictionary:
 	else:
 		# this should be unreachable
 		return {}
+		
+func copy_weapon(weapon: Node) -> Node:
+	return create_weapon(weapon.type, weapon.materials, weapon.display_name)
 
 func create_weapon(weapon_type: WeaponType, materials: Dictionary, name: String = "") -> Node:
 	if weapon_type == WeaponType.Melee:

@@ -76,14 +76,14 @@ static func new_level(forge: Forge, new_depth: int = 1, old_player: Player = nul
 			# put the player in the middle of the first room
 			var player: Player = level.get_child(1)
 			if old_player != null:
-				player.current_health = old_player.current_health
-				player.health_changed.emit()
+				player.transfer_from_level(old_player)
 			player.position = Vector2(room_center_x * tile_size as float, room_center_y * tile_size as float)
 		else:
 			# add some enemies to other rooms
 			for j in range(enemies_per_room_min, enemies_per_room_max):
 				var mob = null
-				if rng.randi() % 2 == 0:
+				var jelly_percent = min(70, (new_depth - 1) * 10)
+				if rng.randi() % 100 < jelly_percent:
 					mob = jelly_scene.instantiate()
 				else:
 					mob = crab_scene.instantiate()
@@ -144,6 +144,7 @@ func _process(_delta: float) -> void:
 		$PauseMenu.show()
 		$PauseMenu/CenterContainer/VBoxContainer/Resume.grab_focus()
 	if Input.is_action_just_pressed("interact"):
+		print("pressed interact")
 		if is_on_exit_portal:
 			var next_level = Level.new_level(forge, depth + 1, $Player)
 
@@ -160,6 +161,7 @@ func _process(_delta: float) -> void:
 func _on_mob_died(location: Vector2) -> void:
 	enemy_count -= 1
 	if enemy_count == 0:
+		$ExitPortal.show()
 		$ExitPortal.global_position = location
 		$ExitPortal/AnimationPlayer.play("open")
 
@@ -193,10 +195,46 @@ func _on_player_died() -> void:
 
 
 func _on_exit_portal_body_entered(body: Node2D) -> void:
+	print("exit portal entered")
 	if body == $Player:
 		is_on_exit_portal = true
 
 
 func _on_exit_portal_body_exited(body: Node2D) -> void:
+	print("exit portal exited")
 	if body == $Player:
 		is_on_exit_portal = false
+
+
+func _on_end_portal_open_animation_finished(anim_name: StringName) -> void:
+	# Show level end menu with loot
+	var loot = {}
+	var materials = ["a", "b", "c", "d", "e", "f"]
+	var rng = RandomNumberGenerator.new()
+	for i in range(5): # TODO variable number of loot items depending on level depth
+		var index = rng.randi_range(0, 5)
+		loot[materials[index]] = loot.get(materials[index], 0) + 1
+	
+	for material in loot:
+		$Player.materials[material] = $Player.materials.get(material, 0) + loot[material]
+
+	$LevelEndMenu/CenterContainer/VBoxContainer/Loot/MaterialA/Amount.text = str(loot.get("a", 0))
+	$LevelEndMenu/CenterContainer/VBoxContainer/Loot/MaterialB/Amount.text = str(loot.get("b", 0))
+	$LevelEndMenu/CenterContainer/VBoxContainer/Loot/MaterialC/Amount.text = str(loot.get("c", 0))
+	$LevelEndMenu/CenterContainer/VBoxContainer/Loot/MaterialD/Amount.text = str(loot.get("d", 0))
+	$LevelEndMenu/CenterContainer/VBoxContainer/Loot/MaterialE/Amount.text = str(loot.get("e", 0))
+	$LevelEndMenu/CenterContainer/VBoxContainer/Loot/MaterialF/Amount.text = str(loot.get("g", 0))
+	
+	$LevelEndMenu.show()
+	$LevelEndMenu/CenterContainer/VBoxContainer/CenterContainer/HBoxContainer/Forge.grab_focus()
+	get_tree().paused = true
+
+
+func _on_level_end_menu_forge_pressed() -> void:
+	$LevelEndMenu.hide()
+	$ForgeMenu.reconfigure()
+	$ForgeMenu.show()
+
+func _on_level_end_menu_continue_pressed() -> void:
+	$LevelEndMenu.hide()
+	get_tree().paused = false
