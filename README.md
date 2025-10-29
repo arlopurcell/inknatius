@@ -7,12 +7,14 @@ You're an octopus who can put weapons and wands in each of your 8 arms, but you'
 # Controls
 
 Gamepad recommended
-Left Joystick to move
-A/B/X/Y for your first 4 arm weapons (X for the starting sword)
-right start button to pause
-left menu button for inventory menu (while in this menu, use bumpers to get back and forth to forge menu)
-right bumper to enter level end portal
+* Left Joystick to move
+* A/B/X/Y for your first 4 arm weapons (X for the starting sword)
+* right start button to pause
+* left menu button for inventory menu (while in this menu, use bumpers to get back and forth to forge menu)
+* right bumper to enter level end portal
 
 Keyboard also works
-WASD to move
-YUIO for arm weapons
+* WASD to move
+* YUIO for arm weapons
+* Esc/Tab to pause
+* Enter for level end portal
