@@ -48,35 +48,35 @@ func reconfigure() -> void:
 	var melee_weapon_button = Button.new()
 	melee_weapon_button.text = "New Melee"
 	melee_weapon_button.connect("pressed", func(): _on_forge_new_pressed(Forge.WeaponType.Melee))
-	melee_weapon_button.connect("focus_entered", _on_forge_new_focus_entered)
+	melee_weapon_button.connect("focus_entered", func(): _on_forge_new_focus_entered(Forge.WeaponType.Melee))
 	melee_weapon_button.connect("gui_input", _on_weapon_button_gui_input)
 	$WeaponsContainer/VBoxContainer.add_child(melee_weapon_button)
 	
 	var blink_weapon_button = Button.new()
 	blink_weapon_button.text = "New Blink"
 	blink_weapon_button.connect("pressed", func(): _on_forge_new_pressed(Forge.WeaponType.Blink))
-	blink_weapon_button.connect("focus_entered", _on_forge_new_focus_entered)
+	blink_weapon_button.connect("focus_entered", func(): _on_forge_new_focus_entered(Forge.WeaponType.Blink))
 	blink_weapon_button.connect("gui_input", _on_weapon_button_gui_input)
 	$WeaponsContainer/VBoxContainer.add_child(blink_weapon_button)
 		
 	var aoe_weapon_button = Button.new()
 	aoe_weapon_button.text = "New AOE DOT"
 	aoe_weapon_button.connect("pressed", func(): _on_forge_new_pressed(Forge.WeaponType.AoeDot))
-	aoe_weapon_button.connect("focus_entered", _on_forge_new_focus_entered)
+	aoe_weapon_button.connect("focus_entered", func(): _on_forge_new_focus_entered(Forge.WeaponType.AoeDot))
 	aoe_weapon_button.connect("gui_input", _on_weapon_button_gui_input)
 	$WeaponsContainer/VBoxContainer.add_child(aoe_weapon_button)
 		
 	var projectile_weapon_button = Button.new()
 	projectile_weapon_button.text = "New Projectile"
 	projectile_weapon_button.connect("pressed", func(): _on_forge_new_pressed(Forge.WeaponType.Projectile))
-	projectile_weapon_button.connect("focus_entered", _on_forge_new_focus_entered)
+	projectile_weapon_button.connect("focus_entered", func(): _on_forge_new_focus_entered(Forge.WeaponType.Projectile))
 	projectile_weapon_button.connect("gui_input", _on_weapon_button_gui_input)
 	$WeaponsContainer/VBoxContainer.add_child(projectile_weapon_button)
 		
 	var explosive_weapon_button = Button.new()
 	explosive_weapon_button.text = "New Explosive Projectile"
 	explosive_weapon_button.connect("pressed", func(): _on_forge_new_pressed(Forge.WeaponType.ExplosiveProjectile))
-	explosive_weapon_button.connect("focus_entered", _on_forge_new_focus_entered)
+	explosive_weapon_button.connect("focus_entered", func(): _on_forge_new_focus_entered(Forge.WeaponType.ExplosiveProjectile))
 	explosive_weapon_button.connect("gui_input", _on_weapon_button_gui_input)
 	$WeaponsContainer/VBoxContainer.add_child(explosive_weapon_button)
 	
@@ -113,6 +113,7 @@ func update_available_labels() -> void:
 	$InventoryContainer/AvailableF.text = str(available_materials.get("f", 0))
 	
 func update_material_labels(weapon_type: Forge.WeaponType) -> void:
+	reset_material_labels()
 	var mapping = forge.mapping_for_type(weapon_type)
 	for stat in mapping:
 		var stat_display_name = forge.stat_display_names[stat]
@@ -145,11 +146,11 @@ func _on_weapon_button_pressed(is_arm: bool, index: int) -> void:
 	var weapon = player.arm_weapons[selected_weapon_index] if is_arm else player.inventory_weapons[selected_weapon_index]
 	current_materials = weapon.materials.duplicate()
 	update_current_labels()
-	update_material_labels(weapon.type)
 	$InventoryContainer/MaterialA/More.grab_focus()
 
 func _on_weapon_focus_entered(is_arm: bool, index: int) -> void:
 	var weapon = player.arm_weapons[index] if is_arm else player.inventory_weapons[index]
+	update_material_labels(weapon.type)
 	$OldWeaponDetails.populate(weapon)
 
 func _on_weapon_button_gui_input(event: InputEvent) -> void:
@@ -165,7 +166,8 @@ func _on_forge_new_pressed(type: Forge.WeaponType) -> void:
 	update_material_labels(new_weapon_type)
 	$InventoryContainer/MaterialA/More.grab_focus()
 	
-func _on_forge_new_focus_entered() -> void:
+func _on_forge_new_focus_entered(type: Forge.WeaponType) -> void:
+	update_material_labels(type)
 	$OldWeaponDetails.populate(null)
 
 func _on_inventory_button_pressed() -> void:
