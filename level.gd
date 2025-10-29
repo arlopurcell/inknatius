@@ -144,7 +144,6 @@ func _process(_delta: float) -> void:
 		$PauseMenu.show()
 		$PauseMenu/CenterContainer/VBoxContainer/Resume.grab_focus()
 	if Input.is_action_just_pressed("interact"):
-		print("pressed interact")
 		if is_on_exit_portal:
 			var next_level = Level.new_level(forge, depth + 1, $Player)
 
@@ -155,6 +154,7 @@ func _process(_delta: float) -> void:
 			tree.set_current_scene(next_level)
 	if Input.is_action_just_pressed("inventory"):
 		get_tree().paused = true
+		$InventoryMenu.reconfigure()
 		$InventoryMenu.show()
 		$InventoryMenu/ArmsContainer/Arm0/Button.grab_focus()
 
@@ -195,13 +195,11 @@ func _on_player_died() -> void:
 
 
 func _on_exit_portal_body_entered(body: Node2D) -> void:
-	print("exit portal entered")
 	if body == $Player:
 		is_on_exit_portal = true
 
 
 func _on_exit_portal_body_exited(body: Node2D) -> void:
-	print("exit portal exited")
 	if body == $Player:
 		is_on_exit_portal = false
 
@@ -223,7 +221,7 @@ func _on_end_portal_open_animation_finished(anim_name: StringName) -> void:
 	$LevelEndMenu/CenterContainer/VBoxContainer/Loot/MaterialC/Amount.text = str(loot.get("c", 0))
 	$LevelEndMenu/CenterContainer/VBoxContainer/Loot/MaterialD/Amount.text = str(loot.get("d", 0))
 	$LevelEndMenu/CenterContainer/VBoxContainer/Loot/MaterialE/Amount.text = str(loot.get("e", 0))
-	$LevelEndMenu/CenterContainer/VBoxContainer/Loot/MaterialF/Amount.text = str(loot.get("g", 0))
+	$LevelEndMenu/CenterContainer/VBoxContainer/Loot/MaterialF/Amount.text = str(loot.get("f", 0))
 	
 	$LevelEndMenu.show()
 	$LevelEndMenu/CenterContainer/VBoxContainer/CenterContainer/HBoxContainer/Forge.grab_focus()

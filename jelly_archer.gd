@@ -5,7 +5,7 @@ var speed = 200
 
 var velocity = Vector2.RIGHT
 
-var max_health = 50
+var max_health = 30
 var current_health = max_health
 
 signal health_changed(old_value: int, new_value: int)
@@ -18,7 +18,7 @@ var min_attack_distance = 300
 var ai_freq_frames = 60
 var ai_freq_offset = 0
 
-var power = 20
+var power = 10
 var arrow_range = 1000
 var attack_target = Vector2.ZERO
 

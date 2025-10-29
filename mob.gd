@@ -5,8 +5,9 @@ var speed = 200
 
 var velocity = Vector2.RIGHT
 
-@export var max_health = 50
+@export var max_health = 30
 var current_health = max_health
+var power = 10
 
 signal health_changed(old_value: int, new_value: int)
 signal died(location: Vector2)
@@ -128,4 +129,4 @@ func _on_vision_collider_body_exited(body: Node2D) -> void:
 func _on_attack_collider_body_entered(body: Node2D) -> void:
 	if body.is_in_group("hurtbox") and body.is_in_group("player_mob"):
 		# TODO figure out how much damage to take
-		body.take_damage(20)
+		body.take_damage(power)

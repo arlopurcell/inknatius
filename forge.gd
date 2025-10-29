@@ -16,10 +16,14 @@ const stat_display_names = {
 	"projectile_speed": "Projectile Speed",
 	"explosion_diameter": "Explosion Diamter",
 	"aoe_radius": "AOE Radius",
+	"life_on_hit": "Life on Hit",
+	"mana_on_hit": "Mana on Hit",
 }
 
 var melee_material_mapping = {
 	"power": "a",
+	"life_on_hit": "b",
+	"mana_on_hit": "c",
 }
 var projectile_material_mapping = {
 	"power": "a",
@@ -54,6 +58,8 @@ func new_game() -> void:
 	melee_material_mapping = {}
 	materials = shuffled_materials()
 	melee_material_mapping["power"] = materials.pop_back()
+	melee_material_mapping["life_on_hit"] = materials.pop_back()
+	melee_material_mapping["mana_on_hit"] = materials.pop_back()	
 	
 	projectile_material_mapping = {}
 	materials = shuffled_materials()
@@ -123,6 +129,8 @@ func create_melee_weapon(name: String, materials: Dictionary) -> Sword:
 	var power_level = calculate_level(power_material)
 	var power = power_level * 10
 	
+	var life_on_hit = calculate_level(materials.get(melee_material_mapping.get("life_on_hit"), 0))
+	var mana_on_hit = calculate_level(materials.get(melee_material_mapping.get("mana_on_hit"), 0))
 	var display_name = name if name else "Sword"
 	var mana_cost = 0
 	var speed_scale = 1.0 # TODO
@@ -130,6 +138,8 @@ func create_melee_weapon(name: String, materials: Dictionary) -> Sword:
 	return sword_scene.instantiate().configure(materials, {
 		"display_name": display_name,
 		"power": power,
+		"life_on_hit": life_on_hit,
+		"mana_on_hit": mana_on_hit,
 		"mana_cost": mana_cost,
 		"speed_scale": speed_scale,
 	})

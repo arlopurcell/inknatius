@@ -4,6 +4,8 @@ extends Area2D
 var power = 20.0
 var mana_cost = 0
 var display_name = "Sword"
+var life_on_hit = 0
+var mana_on_hit = 2
 var materials = {}
 var type = Forge.WeaponType.Melee
 
@@ -16,6 +18,8 @@ func configure(materials: Dictionary, params: Dictionary) -> Sword:
 	display_name = params.get("display_name", "Sword")
 	power = params.get("power", 20.0)
 	mana_cost = params.get("mana_cost", 0)
+	life_on_hit = params.get("life_on_hit", 0)
+	mana_on_hit = params.get("mana_on_hit", 0)
 	$AnimationPlayer.speed_scale = params.get("speed_scale", 1.0)
 	$Sprite.modulate = params.get("color", Color(0.7, 0.7, 0.7)) # default gray
 
@@ -30,6 +34,10 @@ func get_stats() -> Dictionary:
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("hurtbox") and body.is_in_group("enemy_mob"):
 		body.take_damage(power)
+		if life_on_hit > 0:
+			get_parent().heal(life_on_hit)
+		if mana_on_hit > 0:
+			get_parent().gain_mana(mana_on_hit)
 
 func _on_animation_finished(_anim_name: StringName) -> void:
 	attack_finished.emit()

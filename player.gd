@@ -11,9 +11,9 @@ var max_health = 50
 var current_health = max_health
 
 var max_mana = 50
-var current_mana = max_mana
+var current_mana = 0
 var mana_regen_frames = 30
-var mana_regen = 2
+var mana_regen = 0
 
 signal health_changed
 signal mana_changed
@@ -21,13 +21,7 @@ signal died
 
 var arm_weapons = [null, null, null, null, null, null, null, null] # 8 arms
 var inventory_weapons = [null, null, null, null, null, null, null, null] # 8 inventory slots
-var materials = {
-	# TODO start empty
-	#"a": 3,
-	#"b": 7,
-	#"c": 4,
-	#"d": 1,
-}
+var materials = {}
 
 const dead_zone_threshold = 0.2
 
@@ -46,26 +40,19 @@ func _ready() -> void:
 		set_arm_weapon(i, arm_weapons[i])
 	
 	if arm_weapons[2] == null:
-		# temp add weapons
-		#var forge = Forge.new()
+		# Give sword on start
 		var forge = get_parent().forge
-		#set_arm_weapon(0, forge.create_blink_weapon("Blink", {"a":1}))
-		#set_arm_weapon(1, forge.create_explosive_projectile_weapon("Explosive Projectile", {"a":1, "d":4}))
-		
 		set_arm_weapon(2, forge.create_melee_weapon("Sword", {forge.melee_material_mapping["power"]: 1}))
-		#set_arm_weapon(3, forge.create_aoe_dot_weapon("Circle AOE DOT", {"a":1, "b":4}))
-		
-		#inventory_weapons[0] = forge.create_projectile_weapon("Projectile", {"a":1})
-		#inventory_weapons[1] = forge.create_explosive_projectile_weapon("Explosive Trap", {"a":2})
 
 func transfer_from_level(other: Player) -> void:
 	self.current_health = other.current_health
 	self.health_changed.emit()
-	# TODO make weapons from previous level work
-	#self.arm_weapons = other.arm_weapons
+	
+	# make weapons from previous level work
 	var forge = get_parent().forge
 	for i in range(8):
-		set_arm_weapon(i, forge.copy_weapon(other.arm_weapons[i]))
+		var w = forge.copy_weapon(other.arm_weapons[i]) if other.arm_weapons[i] else null
+		set_arm_weapon(i, w)
 	
 	self.inventory_weapons = other.inventory_weapons
 	self.materials = other.materials
@@ -94,6 +81,10 @@ func set_animation_flip_h(flip_h: bool):
 	
 func take_damage(damage: int) -> void:
 	current_health -= damage
+	health_changed.emit()
+
+func heal(healing: int) -> void:
+	current_health = min(current_health + healing, max_health)
 	health_changed.emit()
 
 func _on_health_changed() -> void:
@@ -146,6 +137,10 @@ func use_mana(cost: int) -> bool:
 		return true
 	else:
 		return false
+
+func gain_mana(value: int) -> void:
+	current_mana = min(current_mana + value, max_mana)
+	mana_changed.emit()
 
 func set_animation_for_cast() -> void:
 	if abs(face_direction.y) > abs(face_direction.x):
