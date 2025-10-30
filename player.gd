@@ -11,9 +11,9 @@ var max_health = 50
 var current_health = max_health
 
 var max_mana = 50
-var current_mana = 0
+var current_mana = max_mana
 var mana_regen_frames = 30
-var mana_regen = 0
+var mana_regen = 2
 
 signal health_changed
 signal mana_changed
